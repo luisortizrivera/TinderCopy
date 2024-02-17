@@ -4,21 +4,24 @@ import "../Styles/LoginPage.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const LoginRegisterPage = () => {
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isRegistering, setIsRegistering] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    password: "",
+    isRegistering: false,
+  });
 
-  const handleEmailChange = (e) => setEmail(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
-  const handleNameChange = (e) => setName(e.target.value);
-  const handleSurnameChange = (e) => setSurname(e.target.value);
-
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
+    console.log("Email:", form.email);
+    console.log("Password:", form.password);
   };
 
   return (
@@ -26,13 +29,13 @@ const LoginRegisterPage = () => {
       <div className="form-signin w-100 m-auto">
         <form onSubmit={handleSubmit}>
           <h2 className="h3 mb-3 fw-normal text-center text-white">
-            Please {isRegistering ? "register" : "sign in"}
+            Please {form.isRegistering ? "register" : "sign in"}
           </h2>
           <div
             id="registeringBlock"
             style={{
-              maxHeight: isRegistering ? "1000px" : "0",
-              opacity: isRegistering ? "1" : "0",
+              maxHeight: form.isRegistering ? "1000px" : "0",
+              opacity: form.isRegistering ? "1" : "0",
             }}
           >
             <div className="form-floating">
@@ -40,8 +43,8 @@ const LoginRegisterPage = () => {
                 type="text"
                 className="form-control"
                 id="nameInput"
-                value={name}
-                onChange={handleNameChange}
+                value={form.name}
+                onChange={handleChange}
                 placeholder="Nick"
               />
               <label htmlFor="NameInput">Name</label>
@@ -51,8 +54,8 @@ const LoginRegisterPage = () => {
                 type="text"
                 className="form-control"
                 id="surnameInput"
-                value={surname}
-                onChange={handleSurnameChange}
+                value={form.surname}
+                onChange={handleChange}
                 placeholder="Surname"
               />
               <label htmlFor="surnameInput">Surname</label>
@@ -64,8 +67,8 @@ const LoginRegisterPage = () => {
               type="email"
               className="form-control"
               id="emailInput"
-              value={email}
-              onChange={handleEmailChange}
+              value={form.email}
+              onChange={handleChange}
               placeholder="name@example.com"
             />
             <label htmlFor="emailInput">Email address</label>
@@ -75,8 +78,8 @@ const LoginRegisterPage = () => {
               type="password"
               className="form-control"
               id="floatingPassword"
-              value={password}
-              onChange={handlePasswordChange}
+              value={form.password}
+              onChange={handleChange}
               placeholder="Password"
             />
             <label htmlFor="floatingPassword">Password</label>
@@ -93,13 +96,15 @@ const LoginRegisterPage = () => {
             </label>
           </div>
           <Button className="btn btn-primary w-100 py-2" type="submit">
-            {isRegistering ? "Register" : "Sign in"}
+            {form.isRegistering ? "Register" : "Sign in"}
           </Button>
           <Button
             className="btn btn-primary w-100 py-2 mt-3"
-            onClick={() => setIsRegistering(!isRegistering)}
+            onClick={() =>
+              setForm({ ...form, isRegistering: !form.isRegistering })
+            }
           >
-            {isRegistering
+            {form.isRegistering
               ? "Already have an account? Sign in"
               : "Don't have an account? Register"}
           </Button>
