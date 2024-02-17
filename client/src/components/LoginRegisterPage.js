@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const LoginRegisterPage = () => {
   const [name, setName] = useState("");
-  const [surname, setSurname] = useState(""); // Added surname state
+  const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
@@ -13,7 +13,8 @@ const LoginRegisterPage = () => {
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleNameChange = (e) => setName(e.target.value);
-  const handleSurnameChange = (e) => setSurname(e.target.value); // Added handleSurnameChange function
+  const handleSurnameChange = (e) => setSurname(e.target.value);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Email:", email);
@@ -24,35 +25,40 @@ const LoginRegisterPage = () => {
     <section className="vh-100 d-flex align-items-center justify-content-center">
       <div className="form-signin w-100 m-auto">
         <form onSubmit={handleSubmit}>
-          <h2 className="h3 mb-3 fw-normal text-center">
+          <h2 className="h3 mb-3 fw-normal text-center text-white">
             Please {isRegistering ? "register" : "sign in"}
           </h2>
-          {isRegistering && (
-            <>
-              <div className="form-floating">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="nameInput"
-                  value={name}
-                  onChange={handleNameChange}
-                  placeholder="Nick"
-                />
-                <label htmlFor="NameInput">Name</label>
-              </div>
-              <div className="form-floating">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="surnameInput"
-                  value={surname}
-                  onChange={handleSurnameChange}
-                  placeholder="Surname"
-                />
-                <label htmlFor="surnameInput">Surname</label>
-              </div>
-            </>
-          )}
+          <div
+            id="registeringBlock"
+            style={{
+              maxHeight: isRegistering ? "1000px" : "0",
+              opacity: isRegistering ? "1" : "0",
+            }}
+          >
+            <div className="form-floating">
+              <input
+                type="text"
+                className="form-control"
+                id="nameInput"
+                value={name}
+                onChange={handleNameChange}
+                placeholder="Nick"
+              />
+              <label htmlFor="NameInput">Name</label>
+            </div>
+            <div className="form-floating">
+              <input
+                type="text"
+                className="form-control"
+                id="surnameInput"
+                value={surname}
+                onChange={handleSurnameChange}
+                placeholder="Surname"
+              />
+              <label htmlFor="surnameInput">Surname</label>
+            </div>
+          </div>
+
           <div className="form-floating">
             <input
               type="email"
