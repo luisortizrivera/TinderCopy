@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import "../Styles/LoginPage.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import EnterField from "./EnterField";
 
 const LoginRegisterPage = () => {
   const [form, setForm] = useState({
@@ -28,7 +29,7 @@ const LoginRegisterPage = () => {
     <section className="vh-100 d-flex align-items-center justify-content-center">
       <div className="form-signin w-100 m-auto">
         <form onSubmit={handleSubmit}>
-          <h2 className="h3 mb-3 fw-normal text-center text-white">
+          <h2 className="h2 mb-3 fw-normal text-center text-white">
             Please {form.isRegistering ? "register" : "sign in"}
           </h2>
           <div
@@ -38,68 +39,74 @@ const LoginRegisterPage = () => {
               opacity: form.isRegistering ? "1" : "0",
             }}
           >
-            <div className="form-floating">
-              <input
-                type="text"
-                className="form-control"
-                id="nameInput"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Nick"
-              />
-              <label htmlFor="NameInput">Name</label>
-            </div>
-            <div className="form-floating">
-              <input
-                type="text"
-                className="form-control"
-                id="surnameInput"
-                value={form.surname}
-                onChange={handleChange}
-                placeholder="Surname"
-              />
-              <label htmlFor="surnameInput">Surname</label>
-            </div>
+            <EnterField
+              form={form}
+              divClassName="form-floating"
+              inputClassName="form-control firstInput"
+              handleChange={handleChange}
+              label="Name"
+              placeholder="Nick"
+              type="text"
+            />
+            <EnterField
+              form={form}
+              divClassName="form-floating"
+              inputClassName="form-control middleInput"
+              handleChange={handleChange}
+              label="Surname"
+              placeholder="Doe"
+              type="text"
+            />
           </div>
 
-          <div className="form-floating">
-            <input
-              type="email"
-              className="form-control"
-              id="emailInput"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="name@example.com"
-            />
-            <label htmlFor="emailInput">Email address</label>
-          </div>
-          <div className="form-floating">
-            <input
-              type="password"
-              className="form-control"
-              id="floatingPassword"
-              value={form.password}
-              onChange={handleChange}
-              placeholder="Password"
-            />
-            <label htmlFor="floatingPassword">Password</label>
-          </div>
-          <div className="form-check text-start my-3">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value="remember-me"
-              id="flexCheckDefault"
-            />
-            <label className="form-check-label" htmlFor="flexCheckDefault">
-              Remember me
-            </label>
+          <EnterField
+            form={form}
+            divClassName="form-floating"
+            inputClassName={
+              form.isRegistering
+                ? "form-control middleInput"
+                : "form-control firstInput"
+            }
+            handleChange={handleChange}
+            label="Email address"
+            placeholder="name@example.com"
+            type="email"
+          />
+
+          <EnterField
+            form={form}
+            divClassName="form-floating"
+            inputClassName="form-control"
+            handleChange={handleChange}
+            label="Password"
+            placeholder="Password"
+            type="password"
+          />
+
+          <div
+            id="checkBlock"
+            style={{
+              maxHeight: form.isRegistering ? "1000px" : "0",
+              opacity: form.isRegistering ? "1" : "0",
+            }}
+          >
+            <div className="form-check text-start my-3">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                value="remember-me"
+                id="flexCheckDefault"
+              />
+              <label className="form-check-label" htmlFor="flexCheckDefault">
+                Remember me
+              </label>
+            </div>
           </div>
           <Button className="btn btn-primary w-100 py-2" type="submit">
             {form.isRegistering ? "Register" : "Sign in"}
           </Button>
           <Button
-            className="btn btn-primary w-100 py-2 mt-3"
+            className="btn btn-primary w-100 py-2 mt-1"
             onClick={() =>
               setForm({ ...form, isRegistering: !form.isRegistering })
             }

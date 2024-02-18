@@ -15,10 +15,19 @@ body {
   z-index: 2;
 }
 
-.form-signin input[type="email"] {
+.form-signin .firstInput {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
+}
+.form-signin .middleInput {
+  margin-bottom: -1px;
+  margin-top: -1px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  transition: border-radius 0.5s ease-in-out;
 }
 
 .form-signin input[type="password"] {
@@ -27,7 +36,8 @@ body {
   border-top-right-radius: 0;
 }
 
-#registeringBlock {
-  transition: opacity 1s ease, max-height 0.5s ease-in-out;
+#registeringBlock,
+#checkBlock {
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
   overflow: hidden;
 }
