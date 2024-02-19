@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import EnterField from "./EnterField";
+import "../Styles/LoginPage.css";
 
 const EnterFieldList = ({ isRegistering }) => {
   const [form, setForm] = useState({
@@ -45,9 +46,28 @@ const EnterFieldList = ({ isRegistering }) => {
     },
   ];
 
-  return fields
-    .filter((field) => isRegistering || !field.registering)
-    .map((field, index) => (
+  return fields.map((field) =>
+    field.registering ? (
+      isRegistering ? (
+        <div
+          id="registeringBlock"
+          style={{
+            maxHeight: isRegistering ? "1000px" : "0",
+            opacity: isRegistering ? "1" : "0",
+          }}
+        >
+          <EnterField
+            form={form}
+            divClassName="form-floating"
+            inputClassName={`form-control ${field.className}`}
+            handleChange={handleChange}
+            label={field.label}
+            placeholder={field.placeholder}
+            type={field.type}
+          />
+        </div>
+      ) : null
+    ) : (
       <EnterField
         form={form}
         divClassName="form-floating"
@@ -57,7 +77,8 @@ const EnterFieldList = ({ isRegistering }) => {
         placeholder={field.placeholder}
         type={field.type}
       />
-    ));
+    )
+  );
 };
 
 export default EnterFieldList;

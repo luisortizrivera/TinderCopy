@@ -4,7 +4,7 @@ const logger = require("morgan");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
 const path = require("path");
-// const booksRouter = require("./routes/book");
+const userRouter = require("./routes/user");
 const mongoose = require("mongoose");
 const { url } = require("../config/databaseConfig");
 const cors = require("cors");
@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// app.use("/api/book", booksRouter);
+app.use("/api/user", userRouter);
 
 app.use(
   "/api",
