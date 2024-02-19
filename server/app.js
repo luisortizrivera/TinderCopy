@@ -8,8 +8,10 @@ const userRouter = require("./routes/user");
 const mongoose = require("mongoose");
 const { url } = require("../config/databaseConfig");
 const cors = require("cors");
-const { constants } = require("buffer");
+const bodyParser = require("body-parser");
+const passport = require("passport");
 require("dotenv").config();
+require("./configFiles/passport")(passport);
 
 // #region Database connection
 mongoose
@@ -25,6 +27,8 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(passport.initialize());
 
 app.use("/api/user", userRouter);
 

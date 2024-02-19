@@ -1,14 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import EnterField from "./EnterField";
 import "../Styles/LoginPage.css";
 
-const EnterFieldList = ({ isRegistering }) => {
-  const [form, setForm] = useState({
-    name: "",
-    surname: "",
-    email: "",
-    password: "",
-  });
+const EnterFieldList = ({ isRegistering, formState }) => {
+  const { form, setForm } = formState;
 
   const handleChange = (e) => {
     setForm({
@@ -33,7 +28,7 @@ const EnterFieldList = ({ isRegistering }) => {
       registering: true,
     },
     {
-      label: "Email address",
+      label: "Email",
       placeholder: "name@example.com",
       type: "email",
       className: isRegistering ? "middleInput" : "firstInput",
@@ -46,29 +41,27 @@ const EnterFieldList = ({ isRegistering }) => {
     },
   ];
 
-  return fields.map((field) =>
+  return fields.map((field, index) =>
     field.registering ? (
-      isRegistering ? (
-        <div
-          id="registeringBlock"
-          style={{
-            maxHeight: isRegistering ? "1000px" : "0",
-            opacity: isRegistering ? "1" : "0",
-          }}
-        >
-          <EnterField
-            form={form}
-            divClassName="form-floating"
-            inputClassName={`form-control ${field.className}`}
-            handleChange={handleChange}
-            label={field.label}
-            placeholder={field.placeholder}
-            type={field.type}
-          />
-        </div>
-      ) : null
+      <div
+        key={index}
+        className={`registeringBlock ${
+          isRegistering ? "registering" : "not-registering"
+        }`}
+      >
+        <EnterField
+          form={form}
+          divClassName="form-floating"
+          inputClassName={`form-control ${field.className}`}
+          handleChange={handleChange}
+          label={field.label}
+          placeholder={field.placeholder}
+          type={field.type}
+        />
+      </div>
     ) : (
       <EnterField
+        key={index}
         form={form}
         divClassName="form-floating"
         inputClassName={`form-control ${field.className}`}

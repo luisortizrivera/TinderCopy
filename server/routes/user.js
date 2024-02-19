@@ -4,7 +4,7 @@ const User = require("../models/User_model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-const { validateUser } = require("../fieldsValidation/validationRules");
+const { validateUser } = require("../configFiles/validationRules");
 
 router.get("/list", async (req, res) => {
   try {

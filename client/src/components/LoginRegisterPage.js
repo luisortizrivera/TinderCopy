@@ -6,9 +6,16 @@ import EnterFieldList from "./EnterFieldList";
 
 const LoginRegisterPage = () => {
   const [isRegistering, setIsRegistering] = useState(false);
+  const [form, setForm] = useState({
+    Name: "",
+    Surname: "",
+    Email: "",
+    Password: "",
+  });
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted");
+    console.log(form);
   };
 
   return (
@@ -18,14 +25,15 @@ const LoginRegisterPage = () => {
           <h2 className="h2 mb-3 fw-normal text-center text-white">
             Please {isRegistering ? "register" : "sign in"}
           </h2>
-          <EnterFieldList isRegistering={isRegistering} />
+          <EnterFieldList
+            isRegistering={isRegistering}
+            formState={{ form, setForm }}
+          />
 
           <div
-            id="checkBlock"
-            style={{
-              maxHeight: isRegistering ? "1000px" : "0",
-              opacity: isRegistering ? "1" : "0",
-            }}
+            className={`checkBlock ${
+              isRegistering ? "registering" : "not-registering"
+            }`}
           >
             <div className="form-check text-start my-3">
               <input

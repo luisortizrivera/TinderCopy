@@ -36,8 +36,19 @@ body {
   border-top-right-radius: 0;
 }
 
-#registeringBlock,
-#checkBlock {
-  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+.registeringBlock,
+.checkBlock {
   overflow: hidden;
+}
+
+.registering {
+  max-height: 1000px;
+  opacity: 1;
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.not-registering {
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
