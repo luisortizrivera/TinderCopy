@@ -23,6 +23,7 @@ router.post("/register", validateUser, (req, res, next) => {
 
   const newUser = new User({
     name: req.body.name,
+    surname: req.body.name,
     email: req.body.email,
     password: req.body.password,
   });
@@ -42,7 +43,7 @@ router.post("/register", validateUser, (req, res, next) => {
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
+  console.log("the data is ::" + email + " " + password) + "::";
   try {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "User not found" });

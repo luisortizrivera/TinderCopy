@@ -12,7 +12,7 @@ const EnterField = ({
   return (
     <div className={divClassName}>
       <input
-        name={label}
+        name={label.toLowerCase()}
         type={type}
         className={inputClassName}
         id={`floating${label}`}

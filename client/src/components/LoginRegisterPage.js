@@ -7,15 +7,32 @@ import EnterFieldList from "./EnterFieldList";
 const LoginRegisterPage = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [form, setForm] = useState({
-    Name: "",
-    Surname: "",
-    Email: "",
-    Password: "",
+    name: "",
+    surname: "",
+    email: "",
+    password: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
+    console.log("Form submitted:", form);
+    try {
+      const response = await fetch(
+        `/api/user/${isRegistering ? "register" : "login"}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        }
+      );
+
+      if (response.ok) console.log("Data sent successfully!");
+      else console.error("Error sending data:", response.status);
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
   };
 
   return (
