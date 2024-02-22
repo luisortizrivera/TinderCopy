@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import "../Styles/LoginPage.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import EnterFieldList from "./EnterFieldList";
+import EnterFieldList from "../components/EnterFieldList";
 
 const LoginRegisterPage = () => {
   const [isRegistering, setIsRegistering] = useState(false);
+  const [errors, setErrors] = useState(null);
   const [form, setForm] = useState({
     name: "",
     surname: "",
@@ -15,7 +16,7 @@ const LoginRegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", form);
+    // console.log("Form submitted:", form);
     try {
       const response = await fetch(
         `/api/user/${isRegistering ? "register" : "login"}`,
@@ -27,9 +28,15 @@ const LoginRegisterPage = () => {
           body: JSON.stringify(form),
         }
       );
+      const responseBody = await response.json();
 
-      if (response.ok) console.log("Data sent successfully!");
-      else console.error("Error sending data:", response.status);
+      if (response.status === 400) {
+        if (responseBody.errors) setErrors(responseBody.errors);
+      } else if (response.status === 200) {
+        // console.log(responseBody);
+        localStorage.setItem("token", responseBody.token);
+        window.location.href = "/";
+      }
     } catch (error) {
       console.error("An error occurred:", error);
     }
@@ -45,8 +52,8 @@ const LoginRegisterPage = () => {
           <EnterFieldList
             isRegistering={isRegistering}
             formState={{ form, setForm }}
+            errors={errors}
           />
-
           <div
             className={`checkBlock ${
               isRegistering ? "registering" : "not-registering"

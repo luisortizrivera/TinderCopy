@@ -1,8 +1,6 @@
-// import "./App.css";
-
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginRegisterPage from "./components/LoginRegisterPage";
+import LoginRegisterPage from "./pages/LoginRegisterPage";
 
 function App() {
   return (

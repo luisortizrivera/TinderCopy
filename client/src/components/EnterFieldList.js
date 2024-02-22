@@ -2,7 +2,7 @@ import React from "react";
 import EnterField from "./EnterField";
 import "../Styles/LoginPage.css";
 
-const EnterFieldList = ({ isRegistering, formState }) => {
+const EnterFieldList = ({ isRegistering, formState, errors }) => {
   const { form, setForm } = formState;
 
   const handleChange = (e) => {
@@ -57,6 +57,13 @@ const EnterFieldList = ({ isRegistering, formState }) => {
           label={field.label}
           placeholder={field.placeholder}
           type={field.type}
+          errors={
+            errors && errors.length > 0
+              ? errors.filter(
+                  (error) => error.path === field.label.toLowerCase()
+                )
+              : null
+          }
         />
       </div>
     ) : (
@@ -69,6 +76,11 @@ const EnterFieldList = ({ isRegistering, formState }) => {
         label={field.label}
         placeholder={field.placeholder}
         type={field.type}
+        errors={
+          errors && errors.length > 0
+            ? errors.filter((error) => error.path === field.label.toLowerCase())
+            : null
+        }
       />
     )
   );

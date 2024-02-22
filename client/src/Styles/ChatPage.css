@@ -1,0 +1,7 @@
+html,
+body {
+  height: 100%;
+  background-image: url("../../public/images/desktopBackground.webp");
+  background-position: center;
+  background-size: cover;
+}
