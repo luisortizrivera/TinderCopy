@@ -37,6 +37,6 @@ chatSchema.pre("save", function (next) {
   next();
 });
 
-const ChatsModel = mongoose.model("Chats", chatSchema);
+const ChatsModel = mongoose.model("Chat", chatSchema);
 
 module.exports = ChatsModel;
