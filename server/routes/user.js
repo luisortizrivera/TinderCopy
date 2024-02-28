@@ -1,10 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User_model");
+// const User = require("../models/User_model");
+const User = require("../models/UsersModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-const { validateUser } = require("../configFiles/validationRules");
+const {
+  validateUser,
+  validateLogin,
+} = require("../configFiles/validationRules");
 
 router.get("/list", async (req, res) => {
   try {
@@ -15,43 +19,53 @@ router.get("/list", async (req, res) => {
   }
 });
 
-router.post("/register", validateUser, (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
+router.post("/register", validateUser, async (req, res, next) => {
+  const errors = validationResult(req).array();
+  if (errors.length > 0) return res.status(400).json({ errors: errors });
 
   const newUser = new User({
-    name: req.body.name,
-    surname: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
+    Name: req.body.name,
+    Surname: req.body.surname,
+    Email: req.body.email,
+    Password: req.body.password,
+    ProfileImg: Buffer.from(req.body.profileImg, "base64"),
+    Bio: req.body.bio,
   });
+  console.log(newUser);
 
-  User.addUser(newUser, (err, user) => {
-    if (err) {
-      if (err.name === "ValidationError")
-        return res.status(400).json({ message: err.message });
-      return res.json({
-        success: false,
-        msg: "Failed to register user",
-        err: err,
-      });
-    } else return res.json({ success: true, msg: "User registered", user });
-  });
+  try {
+    const user = await User.addUser(newUser);
+    return res.json({ success: true, msg: "User registered", user });
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      errors.push({ msg: err.message });
+      return res.status(400).json({ errors: errors });
+    }
+    return res.json({
+      success: false,
+      msg: "Failed to register user",
+      error: err,
+    });
+  }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", validateLogin, async (req, res) => {
+  const errors = validationResult(req).array();
   const { email, password } = req.body;
-  console.log("the data is ::" + email + " " + password) + "::";
   try {
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "User not found" });
+    const user = await User.findOne({ Email: email });
+    if (!user) {
+      errors.push({ msg: "User not found" });
+      return res.status(401).json({ errors: errors });
+    }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid password" });
+    const isMatch = await bcrypt.compare(password, user.Password);
+    if (!isMatch) {
+      errors.push({ msg: "Incorrect password" });
+      return res.status(401).json({ errors: errors });
+    }
 
-    const payload = { email: user.email };
+    const payload = { email: user.Email };
 
     jwt.sign(payload, process.env.SECRET, { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;

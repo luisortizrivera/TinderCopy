@@ -1,0 +1,73 @@
+html,
+body,
+#root,
+.App {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* background-image: url("../../public/images/desktopBackground.webp"); */
+  background-image: url("../../public/images/blueprintWallpapaer.jpg");
+  background-position: center;
+  background-size: cover;
+}
+.grid-main-container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mainDataFields {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  height: auto;
+  grid-template-rows: auto auto auto auto;
+  align-content: center;
+}
+.profileSettingFields {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  height: auto;
+  grid-template-rows: auto 1fr auto auto;
+  max-width: 500px;
+  word-wrap: break-word;
+  align-content: center;
+}
+.login-data,
+.registering-data {
+  max-width: 300px;
+}
+
+.form-text {
+  word-wrap: break-word;
+}
+
+.disappear-transition {
+  transition: opacity 1s ease-in-out;
+}
+
+.moveAndDissappear-transition {
+  transition: opacity 1s ease-in-out, max-height 1s ease-in-out;
+  display: block;
+}
+
+.hide {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+.show {
+  opacity: 1;
+  max-height: 500px;
+}

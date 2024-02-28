@@ -1,42 +1,59 @@
 const mongoose = require("mongoose");
+const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 const Schema = mongoose.Schema;
-const UsersSchema = new Schema({
-  name: {
+
+const usersSchema = new Schema({
+  userID: {
     type: String,
+    unique: true,
     required: false,
   },
-  surname: {
-    type: String,
-    required: false,
-  },
-  email: {
+  Name: {
     type: String,
     required: true,
-    unique: true,
   },
-  password: {
+  Surname: {
+    type: String,
+    required: true,
+  },
+  Email: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  Password: {
+    type: String,
+    required: true,
+  },
+  ProfileImg: {
+    type: Buffer,
+    required: true,
+  },
+  Bio: {
     type: String,
     required: true,
   },
 });
 
-UsersSchema.pre("save", async function (next) {
+usersSchema.pre("save", async function (next) {
   try {
+    if (!this.userID) this.userID = uuid.v4();
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(this.password, salt);
-    this.password = hashedPassword;
+    const hashedPassword = await bcrypt.hash(this.Password, salt);
+    this.Password = hashedPassword;
     next();
   } catch (error) {
     next(error);
   }
 });
 
-const User = (module.exports = mongoose.model("User", UsersSchema));
+const UserModel = mongoose.model("User", usersSchema);
 
+module.exports = UserModel;
 module.exports.getUserById = async function (id) {
   try {
-    const result = await User.findById(id);
+    const result = await UserModel.findById(id);
     return result;
   } catch (error) {
     console.log("Error searching for user by id");
@@ -47,7 +64,7 @@ module.exports.getUserById = async function (id) {
 module.exports.getUserByUsername = async function (username) {
   const query = { username: username };
   try {
-    const user = await User.findOne(query);
+    const user = await UserModel.findOne(query);
     return user || null;
   } catch (error) {
     console.log("Error getting user by username");
@@ -65,7 +82,7 @@ module.exports.comparePassword = function (candidatePassword, hash, callback) {
 module.exports.getUserByEmail = async function (email) {
   const query = { email: email };
   try {
-    const user = await User.findOne(query);
+    const user = await UserModel.findOne(query);
     return user || null;
   } catch (error) {
     console.log("Error getting user by email");
@@ -74,20 +91,21 @@ module.exports.getUserByEmail = async function (email) {
   }
 };
 
-module.exports.addUser = async function (newUser, callback) {
+module.exports.addUser = async function (newUser) {
   try {
+    console.log("Adding new user: ", newUser);
     const validationError = await validateNewUserFields(newUser);
-    if (validationError) return callback(validationError);
+    if (validationError) throw validationError;
 
     await newUser.save();
-    callback(null, newUser);
+    return newUser;
   } catch (err) {
-    callback(err);
+    throw err;
   }
 };
 
 async function validateNewUserFields(newUser) {
-  const paths = User.schema.paths;
+  const paths = UserModel.schema.paths;
   const requiredFields = Object.keys(paths).filter(
     (field) => paths[field].isRequired
   );

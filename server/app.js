@@ -8,7 +8,7 @@ const userRouter = require("./routes/user");
 const mongoose = require("mongoose");
 const { url } = require("../config/databaseConfig");
 const cors = require("cors");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const passport = require("passport");
 require("dotenv").config();
 require("./configFiles/passport")(passport);
@@ -24,10 +24,11 @@ mongoose
 const app = express();
 
 app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
-app.use(bodyParser.json());
+// app.use(bodyParser.json({ limit: "50mb" }));
+// app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(passport.initialize());
 
 app.use("/api/user", userRouter);
