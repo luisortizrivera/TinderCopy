@@ -1,18 +1,24 @@
 const mongoose = require("mongoose");
 
 const interactionsSchema = new mongoose.Schema({
-  userID: {
+  userID1: {
     type: String,
     required: true,
   },
-  targetUserID: {
+  userID2: {
     type: String,
     required: true,
   },
-  type: {
+  user1Action: {
     type: String,
     enum: ["like", "dislike"],
     required: true,
+  },
+  user2Action: {
+    type: String,
+    enum: ["like", "dislike", "pending"],
+    default: "pending",
+    required: false,
   },
   timestamp: {
     type: Date,
@@ -21,6 +27,18 @@ const interactionsSchema = new mongoose.Schema({
   },
 });
 
-const InteractionsModel = mongoose.model("Interactions", interactionsSchema);
+// interactionsSchema.post('save', function(doc, next) {
+//   if (doc.user1Action === 'like' && doc.user2Action === 'like') {
+//     const chat = new ChatsModel({
+//       userID1: doc.userID1,
+//       userID2: doc.userID2,
+//       messages: [],
+//     });
+//     chat.save();
+//   }
+//   next();
+// });
+
+const InteractionsModel = mongoose.model("Interaction", interactionsSchema);
 
 module.exports = InteractionsModel;
