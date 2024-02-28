@@ -70,7 +70,7 @@ const RegisterLoginPage = () => {
       } else if (response.status === 200 && !isRegistering) {
         localStorage.setItem("auth_token", responseBody.token);
         console.log("LOGUEAO:" + responseBody.token);
-        // window.location.href = "/chatPage";
+        window.location.href = "/chatPage";
       } else if (response.status === 200 && isRegistering)
         window.location.href = "/";
     } catch (error) {
@@ -80,7 +80,6 @@ const RegisterLoginPage = () => {
 
   return (
     <>
-      {/* <div className="vh-100 d-flex align-items-center justify-content-center flex-column "> */}
       <div className=" grid-main-container">
         <div
           className={`mainDataFields disappear-transition ${
