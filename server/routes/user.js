@@ -18,6 +18,15 @@ router.get("/list", async (req, res) => {
   }
 });
 
+router.get("/getRandomUser", async (req, res) => {
+  try {
+    const user = await User.getRandomUser();
+    res.json(user);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 router.post("/register", validateUser, async (req, res, next) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(400).json({ errors: errors });
@@ -27,13 +36,12 @@ router.post("/register", validateUser, async (req, res, next) => {
     Surname: req.body.surname,
     Email: req.body.email,
     Password: req.body.password,
-    ProfileImg: Buffer.from(req.body.profileImg, "base64"),
     Bio: req.body.bio,
   });
   console.log(newUser);
-
+  const profileImg = Buffer.from(req.body.profileImg, "base64");
   try {
-    const user = await User.addUser(newUser);
+    const user = await User.addUser(newUser, profileImg);
     return res.json({ success: true, msg: "User registered", user });
   } catch (err) {
     if (err.name === "ValidationError") {

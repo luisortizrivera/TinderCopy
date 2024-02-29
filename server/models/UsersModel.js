@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
+const Image = require("./ImagesModel");
 const Schema = mongoose.Schema;
 
 const usersSchema = new Schema({
@@ -24,10 +25,6 @@ const usersSchema = new Schema({
   },
   Password: {
     type: String,
-    required: true,
-  },
-  ProfileImg: {
-    type: Buffer,
     required: true,
   },
   Bio: {
@@ -91,16 +88,39 @@ module.exports.getUserByEmail = async function (email) {
   }
 };
 
-module.exports.addUser = async function (newUser) {
+module.exports.addUser = async function (newUser, profileImg) {
   try {
     console.log("Adding new user: ", newUser);
     const validationError = await validateNewUserFields(newUser);
     if (validationError) throw validationError;
+    const savedUser = await newUser.save();
 
-    await newUser.save();
-    return newUser;
+    const newImage = new Image({
+      _id: savedUser._id,
+      profileImg: profileImg,
+    });
+
+    await newImage.save();
+    return savedUser;
   } catch (err) {
     throw err;
+  }
+};
+
+module.exports.getRandomUser = async function () {
+  try {
+    const count = await UserModel.estimatedDocumentCount();
+    if (count < 1) {
+      console.error("Not enough users in the database");
+      return null;
+    }
+
+    const randomUsers = await UserModel.aggregate([{ $sample: { size: 5 } }]);
+    const randomIndex = Math.floor(Math.random() * randomUsers.length);
+    return randomUsers[randomIndex] || null;
+  } catch (error) {
+    console.error("Error retrieving random user", error);
+    throw error;
   }
 };
 
