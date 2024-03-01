@@ -6,6 +6,9 @@ const imageSchema = new mongoose.Schema({
   },
 });
 
+imageSchema.statics.getImageById = async function (id) {
+  return await this.findById(id);
+};
 const ImagesModel = mongoose.model("Image", imageSchema);
 
 module.exports = ImagesModel;

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/UsersModel");
+const Image = require("../models/ImagesModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
@@ -27,6 +28,17 @@ router.get("/getRandomUser", async (req, res) => {
   }
 });
 
+router.get("/getUserImage/:id", async (req, res) => {
+  try {
+    const userImage = await Image.getImageById(req.params.id);
+    const base64Image = Buffer.from(userImage.profileImg).toString("base64");
+    console.log("FROM API: " + base64Image);
+    res.send(base64Image);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 router.post("/register", validateUser, async (req, res, next) => {
   const errors = validationResult(req).array();
   if (errors.length > 0) return res.status(400).json({ errors: errors });
@@ -39,7 +51,7 @@ router.post("/register", validateUser, async (req, res, next) => {
     Bio: req.body.bio,
   });
   console.log(newUser);
-  const profileImg = Buffer.from(req.body.profileImg, "base64");
+  const profileImg = Buffer.from(req.body.profileImg.split(';base64,').pop(), "base64");
   try {
     const user = await User.addUser(newUser, profileImg);
     return res.json({ success: true, msg: "User registered", user });
@@ -65,7 +77,6 @@ router.post("/login", validateLogin, async (req, res) => {
       errors.push({ msg: "User not found" });
       return res.status(401).json({ errors: errors });
     }
-
     const isMatch = await bcrypt.compare(password, user.Password);
     if (!isMatch) {
       errors.push({ msg: "Incorrect password" });

@@ -1,6 +1,15 @@
 html,
-body {
+body,
+#root,
+.App {
   height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* background-image: url("../../public/images/desktopBackground.webp"); */
   background-image: url("../../public/images/blueprintWallpapaer.jpg");
   background-position: center;
   background-size: cover;

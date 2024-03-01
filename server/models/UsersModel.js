@@ -44,10 +44,26 @@ usersSchema.pre("save", async function (next) {
     next(error);
   }
 });
+usersSchema.statics.getRandomUser = async function () {
+  try {
+    const count = await UserModel.estimatedDocumentCount();
+    if (count < 1) {
+      console.error("Not enough users in the database");
+      return null;
+    }
 
+    const randomUsers = await UserModel.aggregate([{ $sample: { size: 5 } }]);
+    const randomIndex = Math.floor(Math.random() * randomUsers.length);
+    return randomUsers[randomIndex] || null;
+  } catch (error) {
+    console.error("Error retrieving random user", error);
+    throw error;
+  }
+};
 const UserModel = mongoose.model("User", usersSchema);
 
 module.exports = UserModel;
+
 module.exports.getUserById = async function (id) {
   try {
     const result = await UserModel.findById(id);
@@ -104,23 +120,6 @@ module.exports.addUser = async function (newUser, profileImg) {
     return savedUser;
   } catch (err) {
     throw err;
-  }
-};
-
-module.exports.getRandomUser = async function () {
-  try {
-    const count = await UserModel.estimatedDocumentCount();
-    if (count < 1) {
-      console.error("Not enough users in the database");
-      return null;
-    }
-
-    const randomUsers = await UserModel.aggregate([{ $sample: { size: 5 } }]);
-    const randomIndex = Math.floor(Math.random() * randomUsers.length);
-    return randomUsers[randomIndex] || null;
-  } catch (error) {
-    console.error("Error retrieving random user", error);
-    throw error;
   }
 };
 

@@ -1,36 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
 const Profile = () => {
+  const [randomUser, setRandomUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("/api/user/getRandomUser");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const userData = await response.json();
+        const imageResponse = await fetch(
+          "/api/user/getUserImage/" + userData._id
+        );
+        if (!imageResponse.ok) {
+          throw new Error(`HTTP error! status: ${imageResponse.status}`);
+        }
+        const base64Image = await imageResponse.text();
+        const imageUrl = "data:image/jpeg;base64," + base64Image;
+        setRandomUser({
+          user: userData,
+          profileImg: imageUrl,
+        });
+      } catch (error) {
+        console.error("Error fetching random user:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <div
       className="profileCard"
       style={{
-        width: "70%",
         height: "100%",
-        float: "left",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <Card
-        style={{
-          width: "70%",
-          height: "70%",
-        }}
-      >
-        <Card.Img variant="top" src="holder.js/100px180" />
-        <Card.Body>
-          <Card.Title>Card Title</Card.Title>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
-          <Button variant="primary">Go somewhere</Button>
-        </Card.Body>
-      </Card>
+      {randomUser && (
+        <Card
+          style={{
+            width: "70%",
+            height: "70%",
+          }}
+        >
+          <Card.Img variant="top" src={randomUser.profileImg} />
+          <Card.Body>
+            <Card.Title>
+              {`${randomUser.user.Name} ${randomUser.user.Surname}`}
+            </Card.Title>
+            <Card.Text>{randomUser.user.Bio}</Card.Text>
+            <Button variant="primary">Go somewhere</Button>
+          </Card.Body>
+        </Card>
+      )}
     </div>
   );
 };
