@@ -37,6 +37,11 @@ chatSchema.pre("save", function (next) {
   next();
 });
 
+chatSchema.statics.getAllChats = async function (userID) {
+  const chats = await this.find({ $or: [{ userID1: userID }, { userID2: userID }] });
+  return chats;
+};
+
 const ChatsModel = mongoose.model("Chat", chatSchema);
 
 module.exports = ChatsModel;

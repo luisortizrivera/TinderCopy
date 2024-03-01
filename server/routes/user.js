@@ -3,6 +3,8 @@ const router = express.Router();
 const User = require("../models/UsersModel");
 const Image = require("../models/ImagesModel");
 const jwt = require("jsonwebtoken");
+// const { getMatches } = require('./matches');
+const passport = require("passport");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 const {
@@ -19,14 +21,20 @@ router.get("/list", async (req, res) => {
   }
 });
 
-router.get("/getRandomUser", async (req, res) => {
-  try {
-    const user = await User.getRandomUser();
-    res.json(user);
-  } catch (err) {
-    console.log(err);
+router.get(
+  "/getRandomUser",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, _) => {
+    try {
+      const currentUser = req.user;
+      const user = await User.getRandomUser(currentUser._id);
+      res.json(user);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   }
-});
+);
 
 router.get("/getUserImage/:id", async (req, res) => {
   try {
@@ -51,7 +59,10 @@ router.post("/register", validateUser, async (req, res, next) => {
     Bio: req.body.bio,
   });
   console.log(newUser);
-  const profileImg = Buffer.from(req.body.profileImg.split(';base64,').pop(), "base64");
+  const profileImg = Buffer.from(
+    req.body.profileImg.split(";base64,").pop(),
+    "base64"
+  );
   try {
     const user = await User.addUser(newUser, profileImg);
     return res.json({ success: true, msg: "User registered", user });

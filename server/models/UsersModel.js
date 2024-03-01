@@ -44,7 +44,7 @@ usersSchema.pre("save", async function (next) {
     next(error);
   }
 });
-usersSchema.statics.getRandomUser = async function () {
+usersSchema.statics.getRandomUser = async function (currentUserId) {
   try {
     const count = await UserModel.estimatedDocumentCount();
     if (count < 1) {
@@ -52,7 +52,10 @@ usersSchema.statics.getRandomUser = async function () {
       return null;
     }
 
-    const randomUsers = await UserModel.aggregate([{ $sample: { size: 5 } }]);
+    const randomUsers = await UserModel.aggregate([
+      { $match: { _id: { $ne: currentUserId } } },
+      { $sample: { size: 5 } }
+    ]);
     const randomIndex = Math.floor(Math.random() * randomUsers.length);
     return randomUsers[randomIndex] || null;
   } catch (error) {
@@ -141,7 +144,7 @@ async function validateNewUserFields(newUser) {
       )}`,
     };
   }
-  if (await module.exports.getUserByEmail(newUser.email)) {
+  if (await module.exports.getUserByEmail(newUser.Email)) {
     return {
       name: "ValidationError",
       message: "An user with the same email already exists",
