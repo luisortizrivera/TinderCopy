@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import { handleInteraction } from "../handlers/InteractionHandlers";
 
-const Profile = () => {
+const Profile = (props) => {
   const [randomUser, setRandomUser] = useState(null);
 
   useEffect(() => {
@@ -67,7 +68,10 @@ const Profile = () => {
               <Button
                 variant="primary"
                 size="lg"
-                style={{ width: "30%", height: "60%", padding: 0}}
+                style={{ width: "30%", height: "60%", padding: 0 }}
+                onClick={() =>
+                  handleInteraction("dislike", props.currentUser, randomUser)
+                }
               >
                 NEVER
               </Button>
@@ -75,6 +79,9 @@ const Profile = () => {
                 variant="primary"
                 size="lg"
                 style={{ width: "30%", height: "60%", padding: 0 }}
+                onClick={() =>
+                  handleInteraction("like", props.currentUser, randomUser)
+                }
               >
                 YAASS
               </Button>

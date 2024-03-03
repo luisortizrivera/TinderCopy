@@ -36,6 +36,17 @@ router.get(
   }
 );
 
+router.get("/getUser/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.json({ user });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
 router.get("/getUserImage/:id", async (req, res) => {
   try {
     const userImage = await Image.getImageById(req.params.id);

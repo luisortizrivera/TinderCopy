@@ -1,8 +1,8 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-const Match = (props) => {
-  const { name, id, image } = props;
+const UserMatchCard = (props) => {
+  const { name, image, handleOpenChat } = props;
 
   return (
     <div>
@@ -19,7 +19,7 @@ const Match = (props) => {
             }}
           >
             <Button style={{ marginBottom: "2px" }}>{name}</Button>
-            <Button>Open Chat</Button>
+            <Button onClick={handleOpenChat}>Open Chat</Button>
           </div>
           <div
             className="matchImage"
@@ -35,8 +35,6 @@ const Match = (props) => {
               variant="right"
               src={image}
               style={{ objectFit: "cover", width: "auto", height: "78px" }}
-              //   width={"20px"}
-              //   height={"20px"}
             />
           </div>
         </Card.Body>
@@ -44,4 +42,4 @@ const Match = (props) => {
     </div>
   );
 };
-export default Match;
+export default UserMatchCard;

@@ -6,6 +6,7 @@ import Matches from "../components/Matches";
 
 const ChatPage = () => {
   const [matches, setMatches] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -15,7 +16,8 @@ const ChatPage = () => {
           },
         });
         const data = await response.json();
-        setMatches(data);
+        setCurrentUser(data.currentUser);
+        setMatches(data.matches);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -35,8 +37,8 @@ const ChatPage = () => {
         margin: 0,
       }}
     >
-      <Profile />
-      <Matches />
+      {currentUser && <Profile currentUser={currentUser} />}
+      {currentUser && <Matches currentUser={currentUser} matches={matches} />}
     </div>
   );
 };
