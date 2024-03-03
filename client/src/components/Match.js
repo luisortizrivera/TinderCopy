@@ -6,35 +6,27 @@ const UserMatchCard = (props) => {
 
   return (
     <div>
-      <Card>
-        <Card.Body className="d-flex" style={{ padding: 0 }}>
+      <Card style={{ height: "100px" }}>
+        <Card.Body className="d-flex p-0 h-100 justify-content-between">
           <div
-            className="matchActions"
-            style={{
-              width: "50%",
-              float: "left",
-              padding: 0,
-              display: "flex",
-              flexDirection: "column",
-            }}
+            className="matchActions d-flex flex-column justify-content-center"
+            style={{ height: "100%", width: "49%" }}
           >
-            <Button style={{ marginBottom: "2px" }}>{name}</Button>
-            <Button onClick={handleOpenChat}>Open Chat</Button>
+            <Button style={{ marginBottom: "2px", height: "100%" }}>
+              {name}
+            </Button>
+            <Button style={{ height: "100%" }} onClick={handleOpenChat}>
+              Open Chat
+            </Button>
           </div>
           <div
-            className="matchImage"
-            style={{
-              width: "50%",
-              float: "right",
-              padding: 0,
-              display: "flex",
-              justifyContent: "center",
-            }}
+            className="matchImage d-flex justify-content-center"
+            style={{ height: "100%", width: "49%" }}
           >
             <Card.Img
               variant="right"
               src={image}
-              style={{ objectFit: "cover", width: "auto", height: "78px" }}
+              style={{ objectFit: "cover", height: "100%", width: "100%" }}
             />
           </div>
         </Card.Body>

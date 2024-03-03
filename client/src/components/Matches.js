@@ -50,7 +50,7 @@ const Matches = (props) => {
               ? usersWithMatches.map((user) => (
                   <UserMatchCard
                     key={uuid.v4()}
-                    name={`${user.userMatchedData.name} ${user.userMatchedData.surname}`}
+                    name={`${user.userMatchedData.Name}`}
                     image={user.userImage}
                     handleOpenChat={handleOpenChat}
                   />
@@ -75,7 +75,10 @@ async function getUserData(userMatchedID, newUsersWithMatches) {
     );
     const base64Image = await userImageResponse.text();
     const userImage = "data:image/jpeg;base64," + base64Image;
-    newUsersWithMatches.push({ userMatchedData, userImage });
+    newUsersWithMatches.push({
+      userMatchedData: userMatchedData.user,
+      userImage,
+    });
   } catch (error) {
     console.error("Error:", error);
   }
