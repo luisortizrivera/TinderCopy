@@ -28,7 +28,7 @@ const Profile = (props) => {
           user: userData,
           profileImg: imageUrl,
         });
-      }
+      }else setRandomUser(null);
     } catch (error) {
       console.error("Error fetching random user:", error);
     }
@@ -91,6 +91,7 @@ const Profile = (props) => {
                       currentUser: props.currentUser,
                       randomUser: randomUser,
                       fetchUserData: fetchUserData,
+                      fetchMatches: props.fetchMatches,
                     })
                   }
                 >
@@ -106,6 +107,7 @@ const Profile = (props) => {
                       currentUser: props.currentUser,
                       randomUser: randomUser,
                       fetchUserData: fetchUserData,
+                      fetchMatches: props.fetchMatches,
                     })
                   }
                 >

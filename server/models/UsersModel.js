@@ -46,25 +46,6 @@ usersSchema.pre("save", async function (next) {
     next(error);
   }
 });
-// usersSchema.statics.getRandomUser = async function (currentUserId) {
-//   try {
-//     const count = await UserModel.estimatedDocumentCount();
-//     if (count < 1) {
-//       console.error("Not enough users in the database");
-//       return null;
-//     }
-
-//     const randomUsers = await UserModel.aggregate([
-//       { $match: { _id: { $ne: currentUserId } } },
-//       { $sample: { size: 5 } }
-//     ]);
-//     const randomIndex = Math.floor(Math.random() * randomUsers.length);
-//     return randomUsers[randomIndex] || null;
-//   } catch (error) {
-//     console.error("Error retrieving random user", error);
-//     throw error;
-//   }
-// };
 usersSchema.statics.getRandomUser = async function (currentUserId) {
   try {
     const pendingMatchUserId = await Interaction.getUserPendingMatch(
@@ -78,10 +59,12 @@ usersSchema.statics.getRandomUser = async function (currentUserId) {
     const likedPendingUsers = await Interaction.getLikedPendingUsers(
       currentUserId
     );
+    const matchedUsers = await Interaction.getMatchedUsers(currentUserId);
 
     const excludedUsers = [
       ...dislikedUsers,
       ...likedPendingUsers,
+      ...matchedUsers,
       currentUserId,
     ].map((id) => new ObjectId(id));
 

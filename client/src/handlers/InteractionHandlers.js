@@ -6,13 +6,17 @@ const fetchInteractionExists = async (currentUser, randomUser) => {
 };
 
 const updateInteraction = async (id, interaction) => {
-  await fetch(`/api/matches/updateInteraction/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ interactionStatus: interaction }),
-  });
+  const updateInteraction = await fetch(
+    `/api/matches/updateInteraction/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ interactionStatus: interaction }),
+    }
+  );
+  return updateInteraction;
 };
 
 const createInteraction = async (interaction, currentUser, randomUser) => {
@@ -30,7 +34,7 @@ const createInteraction = async (interaction, currentUser, randomUser) => {
 };
 
 export const handleInteraction = async (props) => {
-  const { interaction, currentUser, randomUser, fetchUserData } =
+  const { interaction, currentUser, randomUser, fetchUserData, fetchMatches } =
     props;
   console.log("Interaction: ", interaction);
 
@@ -39,9 +43,16 @@ export const handleInteraction = async (props) => {
     randomUser
   );
 
-  if (interactionExists)
-    await updateInteraction(interactionExists._id, interaction);
-  else await createInteraction(interaction, currentUser, randomUser);
-  const newRandomUser = await fetchUserData();
-  console.log("New Random User: ", newRandomUser);
+  if (interactionExists) {
+    const updatedInteractionResponse = await updateInteraction(
+      interactionExists._id,
+      interaction
+    );
+    const updatedInteraction = await updatedInteractionResponse.json();
+    if (updatedInteraction.interactionStatus === "like") {
+      console.log("Match!!!");
+      fetchMatches();
+    }
+  } else await createInteraction(interaction, currentUser, randomUser);
+  await fetchUserData();
 };

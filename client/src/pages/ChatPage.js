@@ -7,24 +7,24 @@ import Matches from "../components/Matches";
 const ChatPage = () => {
   const [matches, setMatches] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const fetchMatches = async () => {
+    try {
+      const response = await fetch("/api/matches/getUserMatches", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+        },
+      });
+      const data = await response.json();
+      setCurrentUser(data.currentUser);
+      setMatches(data.matches);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/matches/getUserMatches", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-          },
-        });
-        const data = await response.json();
-        setCurrentUser(data.currentUser);
-        setMatches(data.matches);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-
-    fetchData();
+    fetchMatches();
   }, []);
+
   return (
     <div
       className="chatPage"
@@ -37,7 +37,7 @@ const ChatPage = () => {
         margin: 0,
       }}
     >
-      {currentUser && <Profile currentUser={currentUser} />}
+      {currentUser && <Profile currentUser={currentUser} fetchMatches={fetchMatches} />}
       {currentUser && <Matches currentUser={currentUser} matches={matches} />}
     </div>
   );

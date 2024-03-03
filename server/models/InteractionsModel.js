@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const ChatsModel = require("./ChatsModel");
 
+
 const interactionsSchema = new mongoose.Schema({
   userID1: {
     type: String,
@@ -109,10 +110,10 @@ interactionsSchema.statics.getDislikedUsers = async function (currentUserId) {
         { userID1: currentUserId, interactionStatus: "dislike" },
         { userID2: currentUserId, interactionStatus: "dislike" },
       ],
-    }).select("userID1 userID2 -_id");
+    }).select("userID1 userID2");
 
     const dislikedUsers = dislikedInteractions.map((interaction) => {
-      return interaction.userID1.equals(currentUserId)
+      return interaction.userID1 === currentUserId.toString()
         ? interaction.userID2
         : interaction.userID1;
     });
@@ -137,6 +138,27 @@ interactionsSchema.statics.getLikedPendingUsers = async function (
     });
 
     return pendingUsers;
+  } catch (error) {
+    throw new Error("Failed to get pending users");
+  }
+};
+
+interactionsSchema.statics.getMatchedUsers = async function (currentUserId) {
+  try {
+    const matchedInteractions = await this.find({
+      $or: [
+        { userID1: currentUserId, interactionStatus: "like" },
+        { userID2: currentUserId, interactionStatus: "like" },
+      ],
+    }).select("userID1 userID2");
+
+    const matchedUsers = matchedInteractions.map((interaction) => {
+      return interaction.userID1 === currentUserId.toString()
+        ? interaction.userID2
+        : interaction.userID1;
+    });
+
+    return matchedUsers;
   } catch (error) {
     throw new Error("Failed to get pending users");
   }

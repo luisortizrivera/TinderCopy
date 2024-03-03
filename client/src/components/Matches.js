@@ -20,7 +20,7 @@ const Matches = (props) => {
               ? match.userID1
               : match.userID2;
           const existingUser = usersWithMatches.find(
-            (user) => user._id === userMatchedID
+            (user) => user.userMatchedData._id === userMatchedID
           );
           if (existingUser) newUsersWithMatches.push(existingUser);
           else await getUserData(userMatchedID, newUsersWithMatches);
