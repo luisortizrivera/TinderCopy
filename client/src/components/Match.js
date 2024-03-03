@@ -9,24 +9,23 @@ const UserMatchCard = (props) => {
       <Card style={{ height: "100px" }}>
         <Card.Body className="d-flex p-0 h-100 justify-content-between">
           <div
-            className="matchActions d-flex flex-column justify-content-center"
-            style={{ height: "100%", width: "49%" }}
+            className="matchActions d-flex flex-column justify-content-center h-100"
+            style={{ width: "49%" }}
           >
-            <Button style={{ marginBottom: "2px", height: "100%" }}>
-              {name}
-            </Button>
-            <Button style={{ height: "100%" }} onClick={handleOpenChat}>
+            <Button className="mb-1 h-100">{name}</Button>
+            <Button className="h-100" onClick={handleOpenChat}>
               Open Chat
             </Button>
           </div>
           <div
-            className="matchImage d-flex justify-content-center"
-            style={{ height: "100%", width: "49%" }}
+            className="matchImage d-flex justify-content-center h-100"
+            style={{ width: "49%" }}
           >
             <Card.Img
               variant="right"
               src={image}
-              style={{ objectFit: "cover", height: "100%", width: "100%" }}
+              className="w-100 h-100"
+              style={{ objectFit: "cover" }}
             />
           </div>
         </Card.Body>
