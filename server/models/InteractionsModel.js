@@ -88,6 +88,60 @@ interactionsSchema.statics.getUserMatches = async function (userId) {
   }
 };
 
+interactionsSchema.statics.getUserPendingMatch = async function (
+  currentUserID
+) {
+  try {
+    const interaction = await this.findOne({
+      userID2: currentUserID,
+      interactionStatus: "pending",
+    });
+    return interaction ? interaction.userID1 : null;
+  } catch (error) {
+    throw new Error("Failed to find user ID");
+  }
+};
+
+interactionsSchema.statics.getDislikedUsers = async function (currentUserId) {
+  try {
+    const dislikedInteractions = await this.find({
+      $or: [
+        { userID1: currentUserId, interactionStatus: "dislike" },
+        { userID2: currentUserId, interactionStatus: "dislike" },
+      ],
+    }).select("userID1 userID2 -_id");
+
+    const dislikedUsers = dislikedInteractions.map((interaction) => {
+      return interaction.userID1.equals(currentUserId)
+        ? interaction.userID2
+        : interaction.userID1;
+    });
+
+    return dislikedUsers;
+  } catch (error) {
+    throw new Error("Failed to get disliked users");
+  }
+};
+
+interactionsSchema.statics.getLikedPendingUsers = async function (
+  currentUserId
+) {
+  try {
+    const pendingInteractions = await this.find({
+      userID1: currentUserId,
+      interactionStatus: "pending",
+    }).select("userID2");
+
+    const pendingUsers = pendingInteractions.map((interaction) => {
+      return interaction.userID2;
+    });
+
+    return pendingUsers;
+  } catch (error) {
+    throw new Error("Failed to get pending users");
+  }
+};
+
 const InteractionsModel = mongoose.model("Interaction", interactionsSchema);
 
 module.exports = InteractionsModel;

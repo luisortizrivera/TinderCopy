@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 const Image = require("./ImagesModel");
+const Interaction = require("./InteractionsModel");
+const ObjectId = require("mongoose").Types.ObjectId;
 const Schema = mongoose.Schema;
 
 const usersSchema = new Schema({
@@ -44,18 +46,55 @@ usersSchema.pre("save", async function (next) {
     next(error);
   }
 });
+// usersSchema.statics.getRandomUser = async function (currentUserId) {
+//   try {
+//     const count = await UserModel.estimatedDocumentCount();
+//     if (count < 1) {
+//       console.error("Not enough users in the database");
+//       return null;
+//     }
+
+//     const randomUsers = await UserModel.aggregate([
+//       { $match: { _id: { $ne: currentUserId } } },
+//       { $sample: { size: 5 } }
+//     ]);
+//     const randomIndex = Math.floor(Math.random() * randomUsers.length);
+//     return randomUsers[randomIndex] || null;
+//   } catch (error) {
+//     console.error("Error retrieving random user", error);
+//     throw error;
+//   }
+// };
 usersSchema.statics.getRandomUser = async function (currentUserId) {
   try {
-    const count = await UserModel.estimatedDocumentCount();
-    if (count < 1) {
-      console.error("Not enough users in the database");
+    const pendingMatchUserId = await Interaction.getUserPendingMatch(
+      currentUserId
+    );
+    if (pendingMatchUserId) {
+      return await UserModel.findById(pendingMatchUserId);
+    }
+
+    const dislikedUsers = await Interaction.getDislikedUsers(currentUserId);
+    const likedPendingUsers = await Interaction.getLikedPendingUsers(
+      currentUserId
+    );
+
+    const excludedUsers = [
+      ...dislikedUsers,
+      ...likedPendingUsers,
+      currentUserId,
+    ].map((id) => new ObjectId(id));
+
+    const randomUsers = await UserModel.aggregate([
+      { $match: { _id: { $nin: excludedUsers } } },
+      { $sample: { size: 5 } },
+    ]);
+
+    if (randomUsers.length < 1) {
+      console.log("Not enough users in the database");
       return null;
     }
 
-    const randomUsers = await UserModel.aggregate([
-      { $match: { _id: { $ne: currentUserId } } },
-      { $sample: { size: 5 } }
-    ]);
     const randomIndex = Math.floor(Math.random() * randomUsers.length);
     return randomUsers[randomIndex] || null;
   } catch (error) {
@@ -63,6 +102,7 @@ usersSchema.statics.getRandomUser = async function (currentUserId) {
     throw error;
   }
 };
+
 const UserModel = mongoose.model("User", usersSchema);
 
 module.exports = UserModel;

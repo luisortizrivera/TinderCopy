@@ -29,11 +29,9 @@ const createInteraction = async (interaction, currentUser, randomUser) => {
   });
 };
 
-export const handleInteraction = async (
-  interaction,
-  currentUser,
-  randomUser
-) => {
+export const handleInteraction = async (props) => {
+  const { interaction, currentUser, randomUser, fetchUserData } =
+    props;
   console.log("Interaction: ", interaction);
 
   const interactionExists = await fetchInteractionExists(
@@ -44,4 +42,6 @@ export const handleInteraction = async (
   if (interactionExists)
     await updateInteraction(interactionExists._id, interaction);
   else await createInteraction(interaction, currentUser, randomUser);
+  const newRandomUser = await fetchUserData();
+  console.log("New Random User: ", newRandomUser);
 };
