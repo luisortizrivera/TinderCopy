@@ -28,10 +28,37 @@ const chatSchema = new mongoose.Schema({
 });
 
 chatSchema.statics.getAllChats = async function (userID) {
-  const chats = await this.find({
-    $or: [{ userID1: userID }, { userID2: userID }],
-  });
-  return chats;
+  try {
+    const chats = await this.find({
+      $or: [{ userID1: userID }, { userID2: userID }],
+    });
+    return chats;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+chatSchema.statics.getChatById = async function (chatId) {
+  try {
+    const chat = await this.findById(chatId);
+    return chat;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+chatSchema.statics.addMessage = async function (chatId, senderID, content) {
+  try {
+    const chat = await this.findById(chatId);
+    chat.messages.push({ senderID, content });
+    await chat.save();
+    return chat;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 const ChatsModel = mongoose.model("Chat", chatSchema);

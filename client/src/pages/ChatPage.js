@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import "../Styles/ChatPage.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Profile from "../components/Profile";
+import ChatBox from "../components/ChatBox";
 import Matches from "../components/Matches";
 
 const ChatPage = () => {
   const [matches, setMatches] = useState([]);
+  const [showChatBox, setShowChatBox] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const fetchMatches = async () => {
     try {
@@ -37,8 +39,24 @@ const ChatPage = () => {
         margin: 0,
       }}
     >
-      {currentUser && <Profile currentUser={currentUser} fetchMatches={fetchMatches} />}
-      {currentUser && <Matches currentUser={currentUser} matches={matches} />}
+      {currentUser && !showChatBox && (
+        <Profile currentUser={currentUser} fetchMatches={fetchMatches} />
+      )}
+      {currentUser && showChatBox && (
+        <ChatBox
+          currentUser={currentUser}
+          userName={showChatBox.name}
+          userSurname={showChatBox.surname}
+          chatId={showChatBox.matchId}
+        />
+      )}
+      {currentUser && (
+        <Matches
+          currentUser={currentUser}
+          matches={matches}
+          setShowChatBox={setShowChatBox}
+        />
+      )}
     </div>
   );
 };

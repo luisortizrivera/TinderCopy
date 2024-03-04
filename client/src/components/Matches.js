@@ -4,11 +4,23 @@ import UserMatchCard from "./Match";
 const uuid = require("uuid");
 
 const Matches = (props) => {
-  // const [chats, setChats] = useState([]);
   const [usersWithMatches, setUsersWithMatches] = useState([]);
-  function handleOpenChat() {
-    console.log("Open Chat");
-  }
+  const handleOpenChat = async (userMatchedData) => {
+    try {
+      const match = props.matches.find((match) => {
+        return (
+          (match.userID1 === props.currentUser._id &&
+            match.userID2 === userMatchedData._id) ||
+          (match.userID2 === props.currentUser._id &&
+            match.userID1 === userMatchedData._id)
+        );
+      });
+
+      if (match) props.setShowChatBox({ name: userMatchedData.name, surname: userMatchedData.surname, matchId: match._id });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +62,9 @@ const Matches = (props) => {
               ? usersWithMatches.map((user) => (
                   <UserMatchCard
                     key={uuid.v4()}
+                    _id={user.userMatchedData._id}
                     name={`${user.userMatchedData.Name}`}
+                    surname={`${user.userMatchedData.Surname}`}
                     image={user.userImage}
                     handleOpenChat={handleOpenChat}
                   />

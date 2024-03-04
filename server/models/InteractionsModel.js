@@ -32,7 +32,7 @@ interactionsSchema.post("findOneAndUpdate", async function (doc) {
   if (doc.interactionStatus === "like" && !doc.chatID) {
     try {
       const chat = new ChatsModel({
-        _id: this._id,
+        _id: doc._id,
         userID1: doc.userID1,
         userID2: doc.userID2,
         messages: [],

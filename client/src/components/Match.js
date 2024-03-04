@@ -2,7 +2,7 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 const UserMatchCard = (props) => {
-  const { name, image, handleOpenChat } = props;
+  const { name, _id, surname, image, handleOpenChat } = props;
 
   return (
     <div>
@@ -13,7 +13,7 @@ const UserMatchCard = (props) => {
             style={{ width: "49%" }}
           >
             <Button className="mb-1 h-100">{name}</Button>
-            <Button className="h-100" onClick={handleOpenChat}>
+            <Button className="h-100" onClick={() => handleOpenChat({name, surname, _id})}>
               Open Chat
             </Button>
           </div>

@@ -6,6 +6,7 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const path = require("path");
 const userRouter = require("./routes/user");
 const userMatches = require("./routes/matches");
+const userChats = require("./routes/chats");
 const mongoose = require("mongoose");
 const { url } = require("../config/databaseConfig");
 const cors = require("cors");
@@ -31,6 +32,7 @@ app.use(passport.initialize());
 
 app.use("/api/user", userRouter);
 app.use("/api/matches", userMatches);
+app.use("/api/chats", userChats);
 
 app.use(
   "/api",
