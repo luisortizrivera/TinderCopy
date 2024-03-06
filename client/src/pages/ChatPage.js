@@ -4,6 +4,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Profile from "../components/Profile";
 import ChatBox from "../components/ChatBox";
 import Matches from "../components/Matches";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
 
 const ChatPage = () => {
   const [matches, setMatches] = useState([]);
@@ -28,36 +31,55 @@ const ChatPage = () => {
   }, []);
 
   return (
-    <div
-      className="chatPage"
-      style={{
-        display: "grid",
-        gridTemplateColumns: "70% 30%",
-        height: "100vh",
-        width: "100vw",
-        overflow: "auto",
-        margin: 0,
-      }}
-    >
-      {currentUser && !showChatBox && (
-        <Profile currentUser={currentUser} fetchMatches={fetchMatches} />
-      )}
-      {currentUser && showChatBox && (
-        <ChatBox
-          currentUser={currentUser}
-          userName={showChatBox.name}
-          userSurname={showChatBox.surname}
-          chatId={showChatBox.matchId}
-        />
-      )}
-      {currentUser && (
-        <Matches
-          currentUser={currentUser}
-          matches={matches}
-          setShowChatBox={setShowChatBox}
-        />
-      )}
-    </div>
+    <>
+      <Navbar
+        fixed="top"
+        collapseOnSelect
+        expand="lg"
+        className=" d-flex bg-body-tertiary rounded"
+        style={{ left: 0, right: "auto" }}
+      >
+        <Container>
+          <Navbar.Brand>FLAM-E</Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link onClick={() => setShowChatBox(null)}>Swipe</Nav.Link>
+              <Nav.Link href="#pricing">My Profile</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <div
+        className="chatPage"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "70% 30%",
+          height: "100vh",
+          width: "100vw",
+          margin: 0,
+        }}
+      >
+        {currentUser && !showChatBox && (
+          <Profile currentUser={currentUser} fetchMatches={fetchMatches} />
+        )}
+        {currentUser && showChatBox && (
+          <ChatBox
+            currentUser={currentUser}
+            userName={showChatBox.name}
+            userSurname={showChatBox.surname}
+            chatId={showChatBox.matchId}
+          />
+        )}
+        {currentUser && (
+          <Matches
+            currentUser={currentUser}
+            matches={matches}
+            setShowChatBox={setShowChatBox}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

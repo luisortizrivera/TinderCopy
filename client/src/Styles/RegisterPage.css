@@ -9,21 +9,10 @@ body,
 }
 
 body {
-  /* background-image: url("../../public/images/desktopBackground.webp"); */
-  background-image: url("../../public/images/blueprintWallpapaer.jpg");
+  background-image: url("../../public/images/desktopBackground.webp");
+  /* background-image: url("../../public/images/blueprintWallpapaer.jpg"); */
   background-position: center;
   background-size: cover;
-}
-.grid-main-container {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .mainDataFields {

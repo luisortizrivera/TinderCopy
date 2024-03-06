@@ -80,7 +80,7 @@ const RegisterLoginPage = () => {
 
   return (
     <>
-      <div className=" grid-main-container">
+      <div className="d-flex h-100 w-100 m-0 p-0 flex-column justify-content-center align-items-center">
         <div
           className={`mainDataFields disappear-transition ${
             isBasicDataFilled ? "hide" : "show"

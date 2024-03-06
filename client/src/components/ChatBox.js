@@ -2,9 +2,16 @@ import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import PropTypes from "prop-types";
 
 const ChatBox = (props) => {
   const { currentUser, userName, userSurname, chatId } = props;
+  ChatBox.propTypes = {
+    currentUser: PropTypes.object.isRequired,
+    userName: PropTypes.string.isRequired,
+    userSurname: PropTypes.string.isRequired,
+    chatId: PropTypes.string.isRequired,
+  };
   const [messages, setMessages] = useState([]);
   const [chat, setChat] = useState(null);
   const [newMessage, setNewMessage] = useState("");
@@ -72,40 +79,39 @@ const ChatBox = (props) => {
       <Card style={{ height: "70%", width: "70%", margin: "auto" }}>
         <Card.Header className="text-center">{`${userName} ${userSurname}`}</Card.Header>
         <Card.Body className="d-flex flex-column overflow-auto">
-          {messages &&
-            messages.map((message, index) => (
-              <div
-                key={index}
-                className={`d-flex ${
-                  message.senderID === currentUser._id
-                    ? "justify-content-end"
-                    : "justify-content-start"
-                }`}
+          {messages?.map((message) => (
+            <div
+              key={`message-${message._id}`}
+              className={`d-flex ${
+                message.senderID === currentUser?._id
+                  ? "justify-content-end"
+                  : "justify-content-start"
+              }`}
+            >
+              <Card
+                className="m-1 d-inline-block"
+                style={{
+                  backgroundColor:
+                    message.senderID === currentUser?._id
+                      ? "#25D366"
+                      : "#2AABEE",
+                  maxWidth: "70%",
+                }}
               >
-                <Card
-                  className="m-1 d-inline-block"
+                <Card.Body
+                  className="text-white"
                   style={{
-                    backgroundColor:
-                      message.senderID === currentUser._id
-                        ? "#25D366"
-                        : "#2AABEE",
-                    maxWidth: "70%",
+                    paddingTop: "0.5rem",
+                    paddingBottom: "0.5rem",
+                    textAlign:
+                      message.senderID === currentUser?._id ? "right" : "left",
                   }}
                 >
-                  <Card.Body
-                    className="text-white"
-                    style={{
-                      paddingTop: "0.5rem",
-                      paddingBottom: "0.5rem",
-                      textAlign:
-                        message.senderID === currentUser._id ? "right" : "left",
-                    }}
-                  >
-                    {message.content}
-                  </Card.Body>
-                </Card>
-              </div>
-            ))}
+                  {message.content}
+                </Card.Body>
+              </Card>
+            </div>
+          ))}
         </Card.Body>
         <Card.Footer>
           <Form className="d-flex flex-column gap-2" onSubmit={handleSend}>

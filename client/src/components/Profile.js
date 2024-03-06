@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { handleInteraction } from "../handlers/InteractionHandlers";
+import CardBody from "react-bootstrap/esm/CardBody";
+import CardTitle from "react-bootstrap/esm/CardTitle";
 
 const Profile = (props) => {
   const [randomUser, setRandomUser] = useState(null);
@@ -28,7 +30,7 @@ const Profile = (props) => {
           user: userData,
           profileImg: imageUrl,
         });
-      }else setRandomUser(null);
+      } else setRandomUser(null);
     } catch (error) {
       console.error("Error fetching random user:", error);
     }
@@ -40,51 +42,39 @@ const Profile = (props) => {
 
   return (
     <div
-      className="profileCard"
-      style={{
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+      className="d-grid align-self-center w-75 h-75"
+      style={{ justifySelf: "center" }}
     >
       <Card
-        className={
-          randomUser ? "text-center" : "text-center justify-content-center"
-        }
         bg={randomUser ? undefined : "secondary"}
-        style={{
-          width: "70%",
-          height: "70%",
-        }}
+        className="w-100 h-100"
+        style={{ overflow: "auto" }}
       >
         {randomUser ? (
           <>
             <Card.Img
               variant="top"
               src={randomUser.profileImg}
-              style={{ width: "auto", height: "60%", objectFit: "cover" }}
+              style={{ maxHeight: "60%", objectFit: "cover" }}
             />
-            <Card.Body
-              className="d-grid gap-2"
-              style={{
-                gridTemplateRows: "75% 25%",
-                alignContent: "space-evenly",
-              }}
+            <div
+              className="d-grid h-100"
+              style={{ gridTemplateRows: "0.5fr 2fr 1fr", maxHeight: "40%" }}
             >
-              <div className="d-flex flex-column">
-                <Card.Title className="d-flex align-items-center justify-content-center h-25 text-center m-0">
-                  {`${randomUser.user.Name} ${randomUser.user.Surname}`}
-                </Card.Title>
-                <Card.Text className="d-flex align-items-center justify-content-center h-75">
-                  {randomUser.user.Bio}
-                </Card.Text>
-              </div>
-              <div className="d-flex flex-row justify-content-between align-items-center h-100">
+              <CardTitle className="d-flex justify-content-center align-items-center mb-0">{`${randomUser.user.Name} ${randomUser.user.Surname}`}</CardTitle>
+              <CardBody className="d-flex align-items-center overflow-scroll">
+                {/* {randomUser.user.Bio} */}
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi ut aliquip ex ea commodo consequatliquip ex ea commodo
+                consequatnsequat.
+              </CardBody>
+              <div className="d-flex w-100 justify-content-between p-3">
                 <Button
                   variant="primary"
                   size="lg"
-                  style={{ width: "30%", height: "100%", padding: 0 }}
+                  className="w-25"
                   onClick={() =>
                     handleInteraction({
                       interaction: "dislike",
@@ -95,12 +85,12 @@ const Profile = (props) => {
                     })
                   }
                 >
-                  NEVER
+                  NOPE
                 </Button>
                 <Button
                   variant="primary"
                   size="lg"
-                  style={{ width: "30%", height: "100%", padding: 0 }}
+                  className="w-25"
                   onClick={() =>
                     handleInteraction({
                       interaction: "like",
@@ -111,13 +101,17 @@ const Profile = (props) => {
                     })
                   }
                 >
-                  YAASS
+                  YES
                 </Button>
               </div>
-            </Card.Body>
+            </div>
           </>
         ) : (
-          <Card.Text className="text-white">THERE ARE NO MORE USERS</Card.Text>
+          <Card.Body className="h-100">
+            <Card.Text className="text-white">
+              THERE ARE NO MORE USERS
+            </Card.Text>
+          </Card.Body>
         )}
       </Card>
     </div>
