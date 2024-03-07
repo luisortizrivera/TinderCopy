@@ -1,5 +1,5 @@
 import React from "react";
-import "../Styles/MatchCardStyle.css";
+import "../Styles/MatchCard.css";
 const UserMatchCard = (props) => {
   const { name, _id, surname, image, handleOpenChat } = props;
 
