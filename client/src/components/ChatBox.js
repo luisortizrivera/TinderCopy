@@ -3,6 +3,7 @@ import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
+import "../Styles/ChatBox.css";
 
 const ChatBox = (props) => {
   const { currentUser, userName, userSurname, chatId } = props;
@@ -67,67 +68,39 @@ const ChatBox = (props) => {
   };
 
   return (
-    <div
-      className="profileCard"
-      style={{
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Card style={{ height: "70%", width: "70%", margin: "auto" }}>
-        <Card.Header className="text-center">{`${userName} ${userSurname}`}</Card.Header>
-        <Card.Body className="d-flex flex-column overflow-auto">
+    <div className="chatBoxContainer">
+      <div className="chatBox">
+        <div className="chatHeader">
+          <h3>{`${userName} ${userSurname}`}</h3>
+        </div>
+        <div className="chatMessages">
           {messages?.map((message) => (
             <div
               key={`message-${message._id}`}
-              className={`d-flex ${
-                message.senderID === currentUser?._id
-                  ? "justify-content-end"
-                  : "justify-content-start"
+              className={`chatMessage ${
+                message.senderID === currentUser?._id ? "sent" : "received"
               }`}
             >
-              <Card
-                className="m-1 d-inline-block"
-                style={{
-                  backgroundColor:
-                    message.senderID === currentUser?._id
-                      ? "#25D366"
-                      : "#2AABEE",
-                  maxWidth: "70%",
-                }}
-              >
-                <Card.Body
-                  className="text-white"
-                  style={{
-                    paddingTop: "0.5rem",
-                    paddingBottom: "0.5rem",
-                    textAlign:
-                      message.senderID === currentUser?._id ? "right" : "left",
-                  }}
-                >
-                  {message.content}
-                </Card.Body>
-              </Card>
+              {message.content}
             </div>
           ))}
-        </Card.Body>
-        <Card.Footer>
-          <Form className="d-flex flex-column gap-2" onSubmit={handleSend}>
-            <Form.Control
-              as="textarea"
-              rows={3}
+        </div>
+        <div className="chatInput">
+          <form id="newMessageForm" onSubmit={handleSend}>
+            <textarea
+              rows="3"
               placeholder="Type here..."
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
             />
-            <Button className="w-100" variant="primary" type="submit">
-              Send
-            </Button>
-          </Form>
-        </Card.Footer>
-      </Card>
+          </form>
+        </div>
+        <div className="chatButton">
+          <button type="submit" form="newMessageForm">
+            Send
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
