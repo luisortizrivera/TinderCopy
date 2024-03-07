@@ -39,7 +39,7 @@ const ChatPage = () => {
         className=" d-flex bg-body-tertiary rounded"
         style={{ left: 0, right: "auto" }}
       >
-        <Container>
+        <Container style={{ paddingLeft: "10px", paddingRight: "10px" }}>
           <Navbar.Brand>FLAM-E</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">

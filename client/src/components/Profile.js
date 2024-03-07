@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
+import "../Styles/ProfileCard.css";
 import { handleInteraction } from "../handlers/InteractionHandlers";
-import CardBody from "react-bootstrap/esm/CardBody";
-import CardTitle from "react-bootstrap/esm/CardTitle";
 
 const Profile = (props) => {
   const [randomUser, setRandomUser] = useState(null);
@@ -41,79 +38,56 @@ const Profile = (props) => {
   }, []);
 
   return (
-    <div
-      className="d-grid align-self-center w-75 h-75"
-      style={{ justifySelf: "center" }}
-    >
-      <Card
-        bg={randomUser ? undefined : "secondary"}
-        className="w-100 h-100"
-        style={{ overflow: "auto" }}
-      >
-        {randomUser ? (
-          <>
-            <Card.Img
-              variant="top"
-              src={randomUser.profileImg}
-              style={{ maxHeight: "60%", objectFit: "cover" }}
-            />
-            <div
-              className="d-grid h-100"
-              style={{ gridTemplateRows: "0.5fr 2fr 1fr", maxHeight: "40%" }}
+    <div className="profileCardContainer">
+      {randomUser ? (
+        <div className="profileCard">
+          <div className="profileImage">
+            <img src={randomUser.profileImg} alt="Random" />
+          </div>
+          <div className="profileName">
+            <h3>{`${randomUser.user.Name} ${randomUser.user.Surname}`}</h3>
+          </div>
+          <div className="profileDescription">
+            <p>
+              {randomUser.user.Bio}
+              {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequatliquip ex ea */}
+            </p>
+          </div>
+          <div className="profileButtons">
+            <button
+              onClick={() =>
+                handleInteraction({
+                  interaction: "dislike",
+                  currentUser: props.currentUser,
+                  randomUser: randomUser,
+                  fetchUserData: fetchUserData,
+                  fetchMatches: props.fetchMatches,
+                })
+              }
             >
-              <CardTitle className="d-flex justify-content-center align-items-center mb-0">{`${randomUser.user.Name} ${randomUser.user.Surname}`}</CardTitle>
-              <CardBody className="d-flex align-items-center overflow-scroll">
-                {/* {randomUser.user.Bio} */}
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequatliquip ex ea commodo
-                consequatnsequat.
-              </CardBody>
-              <div className="d-flex w-100 justify-content-between p-3">
-                <Button
-                  variant="primary"
-                  size="lg"
-                  className="w-25"
-                  onClick={() =>
-                    handleInteraction({
-                      interaction: "dislike",
-                      currentUser: props.currentUser,
-                      randomUser: randomUser,
-                      fetchUserData: fetchUserData,
-                      fetchMatches: props.fetchMatches,
-                    })
-                  }
-                >
-                  NOPE
-                </Button>
-                <Button
-                  variant="primary"
-                  size="lg"
-                  className="w-25"
-                  onClick={() =>
-                    handleInteraction({
-                      interaction: "like",
-                      currentUser: props.currentUser,
-                      randomUser: randomUser,
-                      fetchUserData: fetchUserData,
-                      fetchMatches: props.fetchMatches,
-                    })
-                  }
-                >
-                  YES
-                </Button>
-              </div>
-            </div>
-          </>
-        ) : (
-          <Card.Body className="h-100">
-            <Card.Text className="text-white">
-              THERE ARE NO MORE USERS
-            </Card.Text>
-          </Card.Body>
-        )}
-      </Card>
+              NOPE
+            </button>
+            <button
+              onClick={() =>
+                handleInteraction({
+                  interaction: "like",
+                  currentUser: props.currentUser,
+                  randomUser: randomUser,
+                  fetchUserData: fetchUserData,
+                  fetchMatches: props.fetchMatches,
+                })
+              }
+            >
+              YES
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="profileEmptyCard">There are no more users</div>
+      )}
     </div>
   );
 };

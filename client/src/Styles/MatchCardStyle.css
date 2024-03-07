@@ -1,0 +1,34 @@
+.matchCardListContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  width: 100%;
+  border-radius: 10px;
+  gap: 1px;
+}
+
+.matchCardButtonContainer {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  justify-items: stretch;
+  height: 100%;
+  gap: 2px;
+}
+
+.matchCardButtonContainer button {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 5px;
+  background-color: blue;
+  color: white;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  justify-self: center;
+}

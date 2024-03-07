@@ -1,0 +1,86 @@
+.profileCardContainer {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 0;
+}
+
+.profileCard {
+  display: grid;
+  grid-template-rows: 60% 1fr 2fr 1fr;
+  grid-template-columns: 100%;
+  grid-template-areas:
+    "image"
+    "text"
+    "description"
+    "buttons";
+  width: 75%;
+  height: 75%;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: white;
+}
+.profileEmptyCard {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 100%;
+  width: 75%;
+  height: 75%;
+  place-items: center;
+  background-color: gray;
+  color: white;
+  border-radius: 10px;
+}
+
+.profileImage {
+  grid-area: image;
+}
+
+.profileImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+
+.profileName {
+  grid-area: text;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+}
+.profileName h3 {
+  width: max-content;
+  height: max-content;
+  margin: 0;
+}
+
+.profileDescription {
+  grid-area: description;
+  padding: 5px;
+  overflow: scroll;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.profileDescription p {
+  margin: 0;
+}
+
+.profileButtons {
+  grid-area: buttons;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 5px;
+}
+
+.profileButtons button {
+  width: 100px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  background-color: blue;
+  color: white;
+}
