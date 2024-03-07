@@ -27,11 +27,23 @@
   align-items: center;
   justify-content: center;
   padding: 5px;
+  position: relative;
 }
 .chatHeader h3 {
   width: max-content;
   height: max-content;
   margin: 0;
+}
+.refreshButton {
+  position: absolute;
+  right: 10px;
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 5px;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 10px;
 }
 
 .chatMessages {

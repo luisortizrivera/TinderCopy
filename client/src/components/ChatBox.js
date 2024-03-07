@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
 import "../Styles/ChatBox.css";
 
@@ -17,22 +14,23 @@ const ChatBox = (props) => {
   const [chat, setChat] = useState(null);
   const [newMessage, setNewMessage] = useState("");
 
-  useEffect(() => {
-    const fetchChat = async () => {
-      try {
-        const chatResponse = await fetch(`/api/chats/getChat/${chatId}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-          },
-        });
-        const chat = await chatResponse.json();
-        setChat(chat);
-      } catch (error) {
-        console.error("Error fetching chat:", error);
-      }
-    };
+  const fetchChat = async () => {
+    try {
+      const chatResponse = await fetch(`/api/chats/getChat/${chatId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+        },
+      });
+      const chat = await chatResponse.json();
+      setChat(chat);
+    } catch (error) {
+      console.error("Error fetching chat:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchChat();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser, chatId]);
 
   useEffect(() => {
@@ -72,6 +70,9 @@ const ChatBox = (props) => {
       <div className="chatBox">
         <div className="chatHeader">
           <h3>{`${userName} ${userSurname}`}</h3>
+          <button className="refreshButton" onClick={fetchChat}>
+            Refresh
+          </button>
         </div>
         <div className="chatMessages">
           {messages?.map((message) => (
