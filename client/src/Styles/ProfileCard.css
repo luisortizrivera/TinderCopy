@@ -59,7 +59,7 @@
 .profileDescription {
   grid-area: description;
   padding: 5px;
-  overflow: scroll;
+  overflow: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,6 +74,14 @@
   justify-content: space-around;
   align-items: center;
   padding: 5px;
+}
+.profileButtons .unmatchButton {
+  width: 100px;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  background-color: red;
+  color: white;
 }
 
 .profileButtons button {

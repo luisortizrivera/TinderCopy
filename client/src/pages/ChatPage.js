@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../Styles/ChatPage.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Profile from "../components/Profile";
+import ProfileMatched from "../components/ProfileMatched";
 import ChatBox from "../components/ChatBox";
 import Matches from "../components/Matches";
 import Container from "react-bootstrap/Container";
@@ -11,6 +12,7 @@ import Navbar from "react-bootstrap/Navbar";
 const ChatPage = () => {
   const [matches, setMatches] = useState([]);
   const [showChatBox, setShowChatBox] = useState(null);
+  const [showMatchedProfile, setShowMatchedProfile] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const fetchMatches = async () => {
     try {
@@ -44,7 +46,14 @@ const ChatPage = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link onClick={() => setShowChatBox(null)}>Swipe</Nav.Link>
+              <Nav.Link
+                onClick={() => {
+                  setShowChatBox(null);
+                  setShowMatchedProfile(null);
+                }}
+              >
+                Swipe
+              </Nav.Link>
               <Nav.Link href="#pricing">My Profile</Nav.Link>
             </Nav>
           </Navbar.Collapse>
@@ -60,8 +69,14 @@ const ChatPage = () => {
           margin: 0,
         }}
       >
-        {currentUser && !showChatBox && (
+        {currentUser && !showChatBox && !showMatchedProfile && (
           <Profile currentUser={currentUser} fetchMatches={fetchMatches} />
+        )}
+        {currentUser && showMatchedProfile && (
+          <ProfileMatched
+            currentUser={currentUser}
+            showMatchedProfile={showMatchedProfile}
+          />
         )}
         {currentUser && showChatBox && (
           <ChatBox
@@ -76,6 +91,7 @@ const ChatPage = () => {
             currentUser={currentUser}
             matches={matches}
             setShowChatBox={setShowChatBox}
+            setShowMatchedProfile={setShowMatchedProfile}
           />
         )}
       </div>

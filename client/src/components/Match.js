@@ -1,12 +1,12 @@
 import React from "react";
 import "../Styles/MatchCard.css";
 const UserMatchCard = (props) => {
-  const { name, _id, surname, image, handleOpenChat } = props;
+  const { name, _id, surname, image, handleOpenChat, handleOpenProfile } = props;
 
   return (
     <div className="matchCardListContainer">
       <div className="matchCardButtonContainer">
-        <button>{name}</button>
+        <button onClick={() => handleOpenProfile({ name, surname, _id })}>{name}</button>
         <button onClick={() => handleOpenChat({ name, surname, _id })}>
           Open Chat
         </button>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import UserMatchCard from "./Match";
 import Pagination from "react-bootstrap/Pagination";
+import { handleOpenChat, handleOpenProfile } from "../handlers/cardHandlers";
 const uuid = require("uuid");
 
 const Matches = (props) => {
@@ -28,26 +29,12 @@ const Matches = (props) => {
     )
   );
 
-  const handleOpenChat = async (userMatchedData) => {
-    try {
-      const match = props.matches.find((match) => {
-        return (
-          (match.userID1 === props.currentUser._id &&
-            match.userID2 === userMatchedData._id) ||
-          (match.userID2 === props.currentUser._id &&
-            match.userID1 === userMatchedData._id)
-        );
-      });
+  const handleOpenChatFromMatches = (userMatchedData) => {
+    handleOpenChat(props, userMatchedData);
+  };
 
-      if (match)
-        props.setShowChatBox({
-          name: userMatchedData.name,
-          surname: userMatchedData.surname,
-          matchId: match._id,
-        });
-    } catch (error) {
-      console.error("Error:", error);
-    }
+  const handleOpenProfileFromMatches = (userMatchedData) => {
+    handleOpenProfile(props, userMatchedData._id, usersWithMatches);
   };
 
   useEffect(() => {
@@ -100,7 +87,8 @@ const Matches = (props) => {
                     name={`${user.userMatchedData.Name}`}
                     surname={`${user.userMatchedData.Surname}`}
                     image={user.userImage}
-                    handleOpenChat={handleOpenChat}
+                    handleOpenChat={handleOpenChatFromMatches}
+                    handleOpenProfile={handleOpenProfileFromMatches}
                   />
                 ))
               : "You have no matches"}
@@ -112,6 +100,17 @@ const Matches = (props) => {
   );
 };
 export default Matches;
+
+// function findMatchedUser(props, userMatchedData) {
+//   return props.matches.find((match) => {
+//     return (
+//       (match.userID1 === props.currentUser._id &&
+//         match.userID2 === userMatchedData._id) ||
+//       (match.userID2 === props.currentUser._id &&
+//         match.userID1 === userMatchedData._id)
+//     );
+//   });
+// }
 
 async function getUserData(userMatchedID, newUsersWithMatches) {
   try {
