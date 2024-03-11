@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const ChatsModel = require("./ChatsModel");
 
-
 const interactionsSchema = new mongoose.Schema({
   userID1: {
     type: String,
@@ -39,6 +38,17 @@ interactionsSchema.post("findOneAndUpdate", async function (doc) {
       });
       const savedChat = await chat.save();
       doc.chatID = savedChat._id;
+      await doc.save();
+    } catch (err) {
+      console.error(err);
+    }
+  } else if (doc.interactionStatus === "dislike" && doc.chatID) {
+    try {
+      console.log("Deleting chat with ID: ", doc.chatID);
+      await ChatsModel.deleteOne({ _id: doc.chatID });
+      console.log("Chat deleted successfully");
+      doc.chatID = null;
+      console.log("Chat ID set to null");
       await doc.save();
     } catch (err) {
       console.error(err);

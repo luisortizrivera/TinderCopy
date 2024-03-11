@@ -2,11 +2,13 @@ import React, { useEffect, useState, useContext } from "react";
 import "../Styles/ProfileCard.css";
 import { MainPageContext } from "../Context/MainPageContext";
 import { handleOpenChat } from "../handlers/cardHandlers";
+import { unmatchUser } from "../handlers/InteractionHandlers";
 const ProfileMatched = () => {
   const [matchedUser, setMatchedUser] = useState(null);
   const {
     showMatchedProfile,
     matches,
+    setMatches,
     currentUser,
     setShowMatchedProfile,
     setShowChatBox,
@@ -56,15 +58,15 @@ const ProfileMatched = () => {
             </button>
             <button
               className="unmatchButton"
-              // onClick={() =>
-              //   handleInteraction({
-              //     interaction: "like",
-              //     currentUser: props.currentUser,
-              //     matchedUser: matchedUser,
-              //     fetchUserData: fetchUserData,
-              //     fetchMatches: props.fetchMatches,
-              //   })
-              // }
+              onClick={() =>
+                unmatchUser(
+                  matches,
+                  setMatches,
+                  currentUser,
+                  matchedUser.user,
+                  setShowMatchedProfile
+                )
+              }
             >
               Unmatch
             </button>

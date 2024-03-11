@@ -33,6 +33,29 @@ const createInteraction = async (interaction, currentUser, randomUser) => {
   });
 };
 
+export const unmatchUser = async (
+  matches,
+  setMatches,
+  currentUser,
+  targetUser,
+  setShowMatchedProfile
+) => {
+  try {
+    const interactionId = matches.find(
+      (match) =>
+        (match.userID1 === currentUser._id &&
+          match.userID2 === targetUser._id) ||
+        (match.userID2 === currentUser._id && match.userID1 === targetUser._id)
+    )._id;
+    await updateInteraction(interactionId, "dislike");
+    console.log("User unmatched successfully");
+    setShowMatchedProfile(null);
+    setMatches(matches.filter((match) => match._id !== interactionId));
+  } catch (error) {
+    console.error("Failed to unmatch user:", error);
+  }
+};
+
 export const handleInteraction = async (props) => {
   const { interaction, currentUser, randomUser, fetchUserData, fetchMatches } =
     props;
