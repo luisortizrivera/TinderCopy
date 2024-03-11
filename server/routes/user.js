@@ -51,7 +51,6 @@ router.get("/getUserImage/:id", async (req, res) => {
   try {
     const userImage = await Image.getImageById(req.params.id);
     const base64Image = Buffer.from(userImage.profileImg).toString("base64");
-    console.log("FROM API: " + base64Image);
     res.send(base64Image);
   } catch (err) {
     console.log(err);

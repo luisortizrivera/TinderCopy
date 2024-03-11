@@ -1,23 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Accordion from "react-bootstrap/Accordion";
 import UserMatchCard from "./Match";
 import Pagination from "react-bootstrap/Pagination";
 import { handleOpenChat, handleOpenProfile } from "../handlers/cardHandlers";
+import { MainPageContext } from "../Context/MainPageContext";
 const uuid = require("uuid");
 
 const Matches = (props) => {
-  const [usersWithMatches, setUsersWithMatches] = useState([]);
+  const {
+    currentUser,
+    matches,
+    matchedUsersData,
+    setMatchedUsersData,
+    fetchUserImage,
+  } = useContext(MainPageContext);
+  const { setShowChatBox, setShowMatchedProfile } = props;
+
+  //#region Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 5;
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = usersWithMatches.slice(
+  const currentUsers = matchedUsersData.slice(
     indexOfFirstUser,
     indexOfLastUser
   );
   let active = currentPage;
   let items = Array.from(
-    { length: Math.ceil(usersWithMatches.length / usersPerPage) },
+    { length: Math.ceil(matchedUsersData.length / usersPerPage) },
     (_, number) => (
       <Pagination.Item
         key={number + 1}
@@ -28,51 +38,69 @@ const Matches = (props) => {
       </Pagination.Item>
     )
   );
+  //#endregion
 
-  const handleOpenChatFromMatches = (userMatchedData) => {
-    handleOpenChat(props, userMatchedData);
+  const getUserData = async (userMatchedID, newUsersWithMatches) => {
+    try {
+      const userMatchedDataresponse = await fetch(
+        `/api/user/getUser/${userMatchedID}`
+      );
+      const userMatchedData = await userMatchedDataresponse.json();
+      const userImage = await fetchUserImage(userMatchedID);
+      newUsersWithMatches.push({
+        userMatchedData: userMatchedData.user,
+        userImage,
+      });
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
-  const handleOpenProfileFromMatches = (userMatchedData) => {
-    handleOpenProfile(props, userMatchedData._id, usersWithMatches);
+  const handleOpenChatFromMatches = (matchedUser) => {
+    handleOpenChat(
+      { matches, currentUser, setShowMatchedProfile, setShowChatBox },
+      matchedUser.userMatchedData
+    );
+  };
+
+  const handleOpenProfileFromMatches = (matchedUser) => {
+    handleOpenProfile({ setShowMatchedProfile, setShowChatBox }, matchedUser);
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      if (props.matches.length > 0) {
+      if (matches.length > 0) {
         const newUsersWithMatches = [];
-        for (const match of props.matches) {
+        for (const match of matches) {
           const userMatchedID =
-            match.userID1 !== props.currentUser._id
-              ? match.userID1
-              : match.userID2;
-          const existingUser = usersWithMatches.find(
+            match.userID1 !== currentUser._id ? match.userID1 : match.userID2;
+          const existingUser = matchedUsersData.find(
             (user) => user.userMatchedData._id === userMatchedID
           );
           if (existingUser) newUsersWithMatches.push(existingUser);
           else await getUserData(userMatchedID, newUsersWithMatches);
         }
-        setUsersWithMatches(newUsersWithMatches);
+        setMatchedUsersData(newUsersWithMatches);
       }
     };
 
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.matches, props.currentUser._id]);
+  }, [matches, currentUser._id]);
 
   return (
     <div
       className="chatAccordion"
       style={{
         height: "100%",
-        float: "right",
+        alignItems: "flex-end",
         display: "flex",
         flexDirection: "column",
       }}
     >
       <Accordion
         defaultActiveKey="0"
-        style={{ width: "100%", marginBottom: "3px" }}
+        style={{ width: "100%", maxWidth: "400px", marginBottom: "3px" }}
       >
         <Accordion.Item eventKey="0">
           <Accordion.Header> Your Matches</Accordion.Header>
@@ -80,17 +108,16 @@ const Matches = (props) => {
             style={{ padding: 0, textAlign: "center", width: "100%" }}
           >
             {currentUsers.length > 0
-              ? currentUsers.map((user) => (
-                  <UserMatchCard
-                    key={uuid.v4()}
-                    _id={user.userMatchedData._id}
-                    name={`${user.userMatchedData.Name}`}
-                    surname={`${user.userMatchedData.Surname}`}
-                    image={user.userImage}
-                    handleOpenChat={handleOpenChatFromMatches}
-                    handleOpenProfile={handleOpenProfileFromMatches}
-                  />
-                ))
+              ? currentUsers.map((user) => {
+                  return (
+                    <UserMatchCard
+                      key={uuid.v4()}
+                      matchedUser={user}
+                      handleOpenChat={handleOpenChatFromMatches}
+                      handleOpenProfile={handleOpenProfileFromMatches}
+                    />
+                  );
+                })
               : "You have no matches"}
           </Accordion.Body>
         </Accordion.Item>
@@ -100,34 +127,3 @@ const Matches = (props) => {
   );
 };
 export default Matches;
-
-// function findMatchedUser(props, userMatchedData) {
-//   return props.matches.find((match) => {
-//     return (
-//       (match.userID1 === props.currentUser._id &&
-//         match.userID2 === userMatchedData._id) ||
-//       (match.userID2 === props.currentUser._id &&
-//         match.userID1 === userMatchedData._id)
-//     );
-//   });
-// }
-
-async function getUserData(userMatchedID, newUsersWithMatches) {
-  try {
-    const userMatchedDataresponse = await fetch(
-      `/api/user/getUser/${userMatchedID}`
-    );
-    const userMatchedData = await userMatchedDataresponse.json();
-    const userImageResponse = await fetch(
-      `/api/user/getUserImage/${userMatchedID}`
-    );
-    const base64Image = await userImageResponse.text();
-    const userImage = "data:image/jpeg;base64," + base64Image;
-    newUsersWithMatches.push({
-      userMatchedData: userMatchedData.user,
-      userImage,
-    });
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}

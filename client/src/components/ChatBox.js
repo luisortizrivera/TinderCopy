@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import PropTypes from "prop-types";
 import "../Styles/ChatBox.css";
+import { MainPageContext } from "../Context/MainPageContext";
 
 const ChatBox = (props) => {
-  const { currentUser, userName, userSurname, chatId } = props;
+  const { userName, userSurname, chatId } = props;
+  const { currentUser } = useContext(MainPageContext);
   ChatBox.propTypes = {
-    currentUser: PropTypes.object.isRequired,
     userName: PropTypes.string.isRequired,
     userSurname: PropTypes.string.isRequired,
     chatId: PropTypes.string.isRequired,

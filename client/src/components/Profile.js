@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "../Styles/ProfileCard.css";
 import { handleInteraction } from "../handlers/InteractionHandlers";
-
-const Profile = (props) => {
+import { MainPageContext } from "../Context/MainPageContext";
+const Profile = () => {
+  const { currentUser, fetchUserImage, fetchMatches } =
+    useContext(MainPageContext);
   const [randomUser, setRandomUser] = useState(null);
 
   const fetchUserData = async () => {
@@ -15,14 +17,7 @@ const Profile = (props) => {
 
       const userData = await response.json();
       if (userData) {
-        const imageResponse = await fetch(
-          "/api/user/getUserImage/" + userData._id
-        );
-        if (!imageResponse.ok) {
-          throw new Error(`HTTP error! status: ${imageResponse.status}`);
-        }
-        const base64Image = await imageResponse.text();
-        const imageUrl = "data:image/jpeg;base64," + base64Image;
+        const imageUrl = await fetchUserImage(userData._id);
         setRandomUser({
           user: userData,
           profileImg: imageUrl,
@@ -35,6 +30,7 @@ const Profile = (props) => {
 
   useEffect(() => {
     fetchUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -61,10 +57,10 @@ const Profile = (props) => {
               onClick={() =>
                 handleInteraction({
                   interaction: "dislike",
-                  currentUser: props.currentUser,
+                  currentUser: currentUser,
                   randomUser: randomUser,
                   fetchUserData: fetchUserData,
-                  fetchMatches: props.fetchMatches,
+                  fetchMatches: fetchMatches,
                 })
               }
             >
@@ -74,10 +70,10 @@ const Profile = (props) => {
               onClick={() =>
                 handleInteraction({
                   interaction: "like",
-                  currentUser: props.currentUser,
+                  currentUser: currentUser,
                   randomUser: randomUser,
                   fetchUserData: fetchUserData,
-                  fetchMatches: props.fetchMatches,
+                  fetchMatches: fetchMatches,
                 })
               }
             >

@@ -1,37 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "../Styles/ProfileCard.css";
-// import { handleInteraction } from "../handlers/InteractionHandlers";
-
-const ProfileMatched = (props) => {
+import { MainPageContext } from "../Context/MainPageContext";
+import { handleOpenChat } from "../handlers/cardHandlers";
+const ProfileMatched = () => {
   const [matchedUser, setMatchedUser] = useState(null);
-
-  const handleUnmatch = async (matchedUser) => {
-    try {
-      const response = await fetch("/api/matches/unmatch", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-        },
-        body: JSON.stringify({
-          matchedUser: matchedUser,
-        }),
-      });
-      if (response.ok) {
-        props.fetchMatches();
-        props.fetchUserData();
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  const {
+    showMatchedProfile,
+    matches,
+    currentUser,
+    setShowMatchedProfile,
+    setShowChatBox,
+  } = useContext(MainPageContext);
 
   useEffect(() => {
     setMatchedUser({
-      user: props.showMatchedProfile.userMatchedData,
-      profileImg: props.showMatchedProfile.userImage,
+      user: showMatchedProfile.userMatchedData,
+      profileImg: showMatchedProfile.userImage,
     });
-  }, [props.showMatchedProfile]);
+  }, [showMatchedProfile]);
 
   return (
     <div className="profileCardContainer">
@@ -54,15 +40,17 @@ const ProfileMatched = (props) => {
           </div>
           <div className="profileButtons">
             <button
-            // onClick={() =>
-            //   handleInteraction({
-            //     interaction: "dislike",
-            //     currentUser: props.currentUser,
-            //     matchedUser: matchedUser,
-            //     fetchUserData: fetchUserData,
-            //     fetchMatches: props.fetchMatches,
-            //   })
-            // }
+              onClick={() => {
+                handleOpenChat(
+                  {
+                    matches,
+                    currentUser,
+                    setShowMatchedProfile,
+                    setShowChatBox,
+                  },
+                  matchedUser.user
+                );
+              }}
             >
               Open chat
             </button>

@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../Styles/MatchCard.css";
+import { MainPageContext } from "../Context/MainPageContext";
 const UserMatchCard = (props) => {
-  const { name, _id, surname, image, handleOpenChat, handleOpenProfile } = props;
-
+  const { matchedUser, handleOpenChat, handleOpenProfile } = props;
+  const { setTargetUser } = useContext(MainPageContext);
   return (
     <div className="matchCardListContainer">
       <div className="matchCardButtonContainer">
-        <button onClick={() => handleOpenProfile({ name, surname, _id })}>{name}</button>
-        <button onClick={() => handleOpenChat({ name, surname, _id })}>
+        {/* <button onClick={() => handleOpenProfile({ name, surname, _id })}> */}
+        <button
+          onClick={() => {
+            setTargetUser(matchedUser);
+            handleOpenProfile(matchedUser);
+          }}
+        >
+          {matchedUser.userMatchedData.Name}
+        </button>
+        {/* <button onClick={() => handleOpenChat({ name, surname, _id })}> */}
+        <button
+          onClick={() => {
+            setTargetUser(matchedUser);
+            handleOpenChat(matchedUser);
+          }}
+        >
           Open Chat
         </button>
       </div>
-      <img className="image" src={image} alt="centered_image" />
+      <img className="image" src={matchedUser.userImage} alt="centered_image" />
     </div>
   );
 };
