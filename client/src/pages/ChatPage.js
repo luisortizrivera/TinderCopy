@@ -47,7 +47,12 @@ const ChatPage = () => {
               >
                 Swipe
               </Nav.Link>
-              <Nav.Link href="#pricing">My Profile</Nav.Link>
+              <Nav.Link
+                href="/"
+                onClick={() => localStorage.removeItem("auth_token")}
+              >
+                Log out
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
