@@ -16,6 +16,8 @@
     "sendButton";
   width: 75%;
   height: 75%;
+  max-height: 800px;
+  max-width: 600px;
   border: 1px solid black;
   border-radius: 10px;
   background-color: white;
