@@ -9,8 +9,8 @@ body,
 }
 
 body {
-  /* background-image: url("../../public/images/desktopBackground.webp"); */
-  background-image: url("../../public/images/blueprintWallpapaer.jpg");
+  background-image: url("../../public/images/desktopBackground.webp");
+  /* background-image: url("../../public/images/blueprintWallpapaer.jpg"); */
   background-position: center;
   background-size: cover;
 }

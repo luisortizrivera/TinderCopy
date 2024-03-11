@@ -10,8 +10,8 @@ export const handleOpenChat = (props, userMatchedData) => {
     if (match) {
       setShowMatchedProfile(null);
       setShowChatBox({
-        name: userMatchedData.name,
-        surname: userMatchedData.surname,
+        name: userMatchedData.Name,
+        surname: userMatchedData.Surname,
         matchId: match._id,
       });
     }
@@ -20,13 +20,10 @@ export const handleOpenChat = (props, userMatchedData) => {
   }
 };
 
-export const handleOpenProfile = (props, userMatchedId, usersWithMatches) => {
+export const handleOpenProfile = (props, targetUser) => {
   try {
-    const matchedUser = usersWithMatches.find(
-      (user) => user.userMatchedData._id === userMatchedId
-    );
     props.setShowChatBox(null);
-    props.setShowMatchedProfile(matchedUser);
+    props.setShowMatchedProfile(targetUser);
   } catch (error) {
     console.error("Error:", error);
   }

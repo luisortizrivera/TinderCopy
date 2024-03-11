@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import RegisterLoginPage from "./pages/RegisterLoginPage";
 import ChatPage from "./pages/ChatPage";
 import ProtectedRoute from "./components/RouteProtection";
+import { MainPageProvider } from "./Context/MainPageContext";
 
 function App() {
   return (
@@ -15,7 +16,9 @@ function App() {
             path="/chatPage"
             element={
               <ProtectedRoute>
-                <ChatPage />
+                <MainPageProvider>
+                  <ChatPage />
+                </MainPageProvider>
               </ProtectedRoute>
             }
           />
