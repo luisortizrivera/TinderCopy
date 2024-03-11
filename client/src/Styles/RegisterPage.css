@@ -2,8 +2,8 @@ html,
 body,
 #root,
 .App {
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   margin: 0;
   padding: 0;
 }
@@ -13,6 +13,17 @@ body {
   /* background-image: url("../../public/images/blueprintWallpapaer.jpg"); */
   background-position: center;
   background-size: cover;
+}
+
+.loginRegisterContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .mainDataFields {
@@ -33,6 +44,12 @@ body {
   word-wrap: break-word;
   align-content: center;
 }
+@media (max-width: 500px) {
+  .profileSettingFields {
+    margin: 0 10px;
+  }
+}
+
 .login-data,
 .registering-data {
   max-width: 300px;

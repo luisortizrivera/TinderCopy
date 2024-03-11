@@ -80,7 +80,7 @@ const RegisterLoginPage = () => {
 
   return (
     <>
-      <div className="d-flex h-100 w-100 m-0 p-0 flex-column justify-content-center align-items-center">
+      <div className="loginRegisterContainer">
         <div
           className={`mainDataFields disappear-transition ${
             isBasicDataFilled ? "hide" : "show"
@@ -174,7 +174,6 @@ const RegisterLoginPage = () => {
               className="btn btn-primary py-2"
               type="submit"
               form="dataForm"
-              // onClick={handleMainSubmission}
             >
               {isRegistering ? "Register" : "Sign in"}
             </Button>
