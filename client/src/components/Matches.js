@@ -15,6 +15,20 @@ const Matches = (props) => {
     fetchUserImage,
   } = useContext(MainPageContext);
   const { setShowChatBox, setShowMatchedProfile } = props;
+  const [activeKey, setActiveKey] = useState(
+    window.innerWidth >= 500 ? "0" : null
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setActiveKey(window.innerWidth >= 500 ? "0" : null);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   //#region Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -99,7 +113,7 @@ const Matches = (props) => {
       }}
     >
       <Accordion
-        defaultActiveKey="0"
+        defaultActiveKey={activeKey}
         style={{ width: "100%", maxWidth: "400px", marginBottom: "3px" }}
       >
         <Accordion.Item eventKey="0">

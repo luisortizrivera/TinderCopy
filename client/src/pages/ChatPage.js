@@ -26,12 +26,12 @@ const ChatPage = () => {
   }, []);
 
   return (
-    <>
+    <div className="chatPage">
       <Navbar
         fixed="top"
         collapseOnSelect
         expand="lg"
-        className=" d-flex bg-body-tertiary rounded"
+        className="myNavbar d-flex bg-body-tertiary rounded"
         style={{ left: 0, right: "auto" }}
       >
         <Container style={{ paddingLeft: "10px", paddingRight: "10px" }}>
@@ -57,33 +57,22 @@ const ChatPage = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <div
-        className="chatPage"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "80% 20%",
-          height: "100%",
-          width: "100%",
-          margin: 0,
-        }}
-      >
-        {currentUser && !showChatBox && !showMatchedProfile && <Profile />}
-        {currentUser && showMatchedProfile && <ProfileMatched />}
-        {currentUser && showChatBox && (
-          <ChatBox
-            userName={showChatBox.name}
-            userSurname={showChatBox.surname}
-            chatId={showChatBox.matchId}
-          />
-        )}
-        {currentUser && (
-          <Matches
-            setShowChatBox={setShowChatBox}
-            setShowMatchedProfile={setShowMatchedProfile}
-          />
-        )}
-      </div>
-    </>
+      {currentUser && !showChatBox && !showMatchedProfile && <Profile />}
+      {currentUser && showMatchedProfile && <ProfileMatched />}
+      {currentUser && showChatBox && (
+        <ChatBox
+          userName={showChatBox.name}
+          userSurname={showChatBox.surname}
+          chatId={showChatBox.matchId}
+        />
+      )}
+      {currentUser && (
+        <Matches
+          setShowChatBox={setShowChatBox}
+          setShowMatchedProfile={setShowMatchedProfile}
+        />
+      )}
+    </div>
   );
 };
 

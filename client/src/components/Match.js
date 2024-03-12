@@ -7,7 +7,6 @@ const UserMatchCard = (props) => {
   return (
     <div className="matchCardListContainer">
       <div className="matchCardButtonContainer">
-        {/* <button onClick={() => handleOpenProfile({ name, surname, _id })}> */}
         <button
           onClick={() => {
             setTargetUser(matchedUser);
@@ -16,7 +15,6 @@ const UserMatchCard = (props) => {
         >
           {matchedUser.userMatchedData.Name}
         </button>
-        {/* <button onClick={() => handleOpenChat({ name, surname, _id })}> */}
         <button
           onClick={() => {
             setTargetUser(matchedUser);

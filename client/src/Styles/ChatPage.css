@@ -2,15 +2,63 @@ html,
 body,
 #root,
 .App {
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   margin: 0;
   padding: 0;
 }
 
 body {
-  background-image: url("../../public/images/desktopBackground.webp");
-  /* background-image: url("../../public/images/blueprintWallpapaer.jpg"); */
+  /* background-image: url("../../public/images/desktopBackground.webp"); */
+  background-image: url("../../public/images/blueprintWallpapaer.jpg");
   background-position: center;
   background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.chatPage {
+  display: grid;
+  grid-template-columns: 80% 20%;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+@media (max-width: 500px) {
+  body {
+    background-position: center center;
+  }
+
+  .chatPage {
+    grid-area: chatPage;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 0.7fr 1.3fr 8fr;
+    grid-template-areas:
+      "navBar"
+      "matches"
+      "card";
+  }
+  .myNavbar {
+    grid-area: navBar;
+    width: 100%;
+  }
+  .chatAccordion {
+    grid-area: matches;
+    align-items: flex-start !important;
+  }
+  .chatAccordion .accordion {
+    width: 100% !important;
+    max-width: none !important;
+  }
+  .profileCardContainer,
+  .chatBoxContainer {
+    grid-area: card;
+  }
+  .profileCardContainer .profileEmptyCard,
+  .profileCardContainer .profileCard,
+  .chatBoxContainer .chatBox {
+    width: 100%;
+    height: 100%;
+  }
 }
