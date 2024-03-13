@@ -171,6 +171,7 @@ const RegisterLoginPage = () => {
           </Form>
           <div className="d-grid gap-2">
             <Button
+              data-testid="submit-button"
               className="btn btn-primary py-2"
               type="submit"
               form="dataForm"
@@ -178,6 +179,7 @@ const RegisterLoginPage = () => {
               {isRegistering ? "Register" : "Sign in"}
             </Button>
             <Button
+              data-testid="change-btw-login-register-button"
               className="btn btn-primary py-2 mt-1"
               onClick={() => setIsRegistering(!isRegistering)}
             >

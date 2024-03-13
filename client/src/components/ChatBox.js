@@ -98,7 +98,7 @@ const ChatBox = (props) => {
           </form>
         </div>
         <div className="chatButton">
-          <button type="submit" form="newMessageForm">
+          <button id="sendButton" type="submit" form="newMessageForm">
             Send
           </button>
         </div>

@@ -99,7 +99,7 @@ export default function ProfileSetting({
             </Row>
           </Container>
         )}
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+        <Form.Group className="mb-3" controlId="bio-textarea">
           <Form.Label className="text-white">
             Brief description of yourself ({300 - form.bio.length} left)
           </Form.Label>
@@ -120,6 +120,7 @@ export default function ProfileSetting({
         className="btn btn-primary py-2 mt-1 w-100"
         type="submit"
         form="profileSettingsForm"
+        data-testid="resgister-profile-submit-button"
       >
         Submit
       </Button>

@@ -54,19 +54,21 @@ const Profile = () => {
           </div>
           <div className="profileButtons">
             <button
-              onClick={() =>
-                handleInteraction({
-                  interaction: "dislike",
-                  currentUser: currentUser,
-                  randomUser: randomUser,
-                  fetchUserData: fetchUserData,
-                  fetchMatches: fetchMatches,
-                })
-              }
+            id="dislikeButton"
+            onClick={() =>
+              handleInteraction({
+                interaction: "dislike",
+                currentUser: currentUser,
+                randomUser: randomUser,
+                fetchUserData: fetchUserData,
+                fetchMatches: fetchMatches,
+              })
+            }
             >
               NOPE
             </button>
             <button
+              id="likeButton"
               onClick={() =>
                 handleInteraction({
                   interaction: "like",

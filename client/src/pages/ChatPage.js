@@ -48,6 +48,7 @@ const ChatPage = () => {
                 Swipe
               </Nav.Link>
               <Nav.Link
+                id="logoutButton"
                 href="/"
                 onClick={() => localStorage.removeItem("auth_token")}
               >
