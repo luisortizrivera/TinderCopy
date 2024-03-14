@@ -82,13 +82,13 @@ const RegisterLoginPage = () => {
       });
       const responseBody = await response.json();
 
-      if ([400, 401].includes(response.status))
-        if (responseBody.errors) setErrors(responseBody.errors);
-        else if (response.status === 200 && !isRegistering) {
-          localStorage.setItem("auth_token", responseBody.token);
-          window.location.href = "/chatPage";
-        } else if (response.status === 200 && isRegistering)
-          window.location.href = "/";
+      if ([400, 401].includes(response.status) && responseBody.errors)
+        setErrors(responseBody.errors);
+      else if (response.status === 200 && !isRegistering) {
+        localStorage.setItem("auth_token", responseBody.token);
+        window.location.href = "/chatPage";
+      } else if (response.status === 200 && isRegistering)
+        window.location.href = "/";
     } catch (error) {
       console.error("An error occurred:", error);
     }

@@ -11,7 +11,6 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<RegisterLoginPage />} />
-          {/* <Route path="/book/:bookName" element={<BookData />} /> */}
           <Route
             path="/chatPage"
             element={
