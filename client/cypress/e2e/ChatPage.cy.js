@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 describe("Interactions tests", () => {
-  const userEmail = "emma.brown@example.com";
+  const userEmail = "Clifton.Weber@example.com";
   const userPassword = "P@asw0rd.";
   Cypress.Commands.add("loginWithExistingUser", () => {
     cy.visit("http://localhost:3000");
