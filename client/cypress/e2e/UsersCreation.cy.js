@@ -100,7 +100,7 @@ describe("Register and Login tests", () => {
     }
   });
 
-  it("Create ten users", () => {
+  it("Create users", () => {
     for (let i = 0; i < NUMBER_OF_USERS; i++) {
       cy.createNewuser();
     }

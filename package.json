@@ -9,7 +9,7 @@
     "dev:client": "cd client && npm start",
     "dev:server": "cd server && npm run dev",
     "preinstall": "cd server && npm install",
-    "frontTests": "cd client && npx cypress run --spec \"cypress/e2e/ChatPage.cy.js\" --headed",
+    "frontTests": "cd client && npx cypress run --spec \"cypress/e2e/ChatPage.cy.js,cypress/e2e/RegisterLoginPage.cy.js \" --headed",
     "setUpDB": "cd client && npx cypress run --spec \"cypress/e2e/UsersCreation.cy.js\" --headed",
     "build": "cd client && npm run build"
   },
