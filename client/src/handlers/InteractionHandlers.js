@@ -20,7 +20,7 @@ const fetchInteractionExists = async (currentUser, randomUser) => {
  * @returns {Object} The updated interaction.
  */
 const updateInteraction = async (id, interaction) => {
-  const updateInteraction = await fetch(
+  const updateInteractionResponse = await fetch(
     `/api/matches/updateInteraction/${id}`,
     {
       method: "PUT",
@@ -30,7 +30,11 @@ const updateInteraction = async (id, interaction) => {
       body: JSON.stringify({ interactionStatus: interaction }),
     }
   );
-  return updateInteraction;
+  if (!updateInteractionResponse.ok) {
+    throw new Error(`HTTP error! status: ${updateInteractionResponse.status}`);
+  }
+
+  return await updateInteractionResponse.json();
 };
 
 /**
@@ -103,11 +107,10 @@ export const handleInteraction = async (props) => {
   );
 
   if (interactionExists) {
-    const updatedInteractionResponse = await updateInteraction(
+    const updatedInteraction = await updateInteraction(
       interactionExists._id,
       interaction
     );
-    const updatedInteraction = await updatedInteractionResponse.json();
     if (updatedInteraction.interactionStatus === "like") fetchMatches();
   } else await createInteraction(interaction, currentUser, randomUser);
   await fetchUserData();

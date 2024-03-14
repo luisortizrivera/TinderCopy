@@ -10,6 +10,7 @@
     "dev:server": "cd server && npm run dev",
     "preinstall": "cd server && npm install",
     "frontTests": "cd client && npx cypress run --spec \"cypress/e2e/ChatPage.cy.js\" --headed",
+    "setUpDB": "cd client && npx cypress run --spec \"cypress/e2e/UsersCreation.cy.js\" --headed",
     "build": "cd client && npm run build"
   },
   "author": "Luis Ortiz Rivera",

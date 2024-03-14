@@ -13,8 +13,8 @@ describe("Register and Login tests", () => {
     cy.wait(1000);
     cy.get('[data-testid="change-btw-login-register-button"]').click();
     cy.wait(1000);
-    cy.get("input[name=name]").type(faker.person.firstName());
-    cy.get("input[name=surname]").type(faker.person.lastName());
+    cy.get("input[name=name]").type(name);
+    cy.get("input[name=surname]").type(surname);
     cy.get("input[name=email]").type(userEmail);
     cy.get("input[name=password]").type(userPassword);
     cy.get('[data-testid="submit-button"]').click();
