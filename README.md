@@ -2,6 +2,8 @@
 
 This project has been created as the final project for the Advanced Web Development course at the [LUT university](https://www.lut.fi/en).
 
+![alt text](readMeImages/ProjectStand.png)
+
 ## 1. How to run
 
 ### 1.1. Prerequisites
