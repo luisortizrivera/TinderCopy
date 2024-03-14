@@ -3,6 +3,10 @@ import "../Styles/ProfileCard.css";
 import { MainPageContext } from "../Context/MainPageContext";
 import { handleOpenChat } from "../handlers/cardHandlers";
 import { unmatchUser } from "../handlers/InteractionHandlers";
+
+/**
+ * Component that renders the matched profile card.
+ */
 const ProfileMatched = () => {
   const [matchedUser, setMatchedUser] = useState(null);
   const {
@@ -14,6 +18,9 @@ const ProfileMatched = () => {
     setShowChatBox,
   } = useContext(MainPageContext);
 
+  /**
+   * Sets the local matched user data when the showMatchedProfile trigger state changes.
+   */
   useEffect(() => {
     setMatchedUser({
       user: showMatchedProfile.userMatchedData,
@@ -32,13 +39,7 @@ const ProfileMatched = () => {
             <h3>{`${matchedUser.user.Name} ${matchedUser.user.Surname}`}</h3>
           </div>
           <div className="profileDescription">
-            <p>
-              {matchedUser.user.Bio}
-              {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequatliquip ex ea */}
-            </p>
+            <p>{matchedUser.user.Bio}</p>
           </div>
           <div className="profileButtons">
             <button

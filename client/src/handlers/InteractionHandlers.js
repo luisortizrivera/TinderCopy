@@ -1,3 +1,10 @@
+/**
+ * Function to fetch the interaction between the current user and the random user if it exists.
+ *
+ * @param {*} currentUser
+ * @param {*} randomUser
+ * @returns response
+ */
 const fetchInteractionExists = async (currentUser, randomUser) => {
   const response = await fetch(
     `/api/matches/interactionExists/${randomUser.user._id}/${currentUser._id}`
@@ -5,6 +12,13 @@ const fetchInteractionExists = async (currentUser, randomUser) => {
   return await response.json();
 };
 
+/**
+ * Function to update the interaction status.
+ *
+ * @param {String} id The interaction id.
+ * @param {String} interaction The interaction (like or dislike).
+ * @returns {Object} The updated interaction.
+ */
 const updateInteraction = async (id, interaction) => {
   const updateInteraction = await fetch(
     `/api/matches/updateInteraction/${id}`,
@@ -19,6 +33,13 @@ const updateInteraction = async (id, interaction) => {
   return updateInteraction;
 };
 
+/**
+ * Function to create a new interaction between the current user and the random user.
+ *
+ * @param {Object} interaction like or dislike
+ * @param {Object} currentUser
+ * @param {Object} randomUser
+ */
 const createInteraction = async (interaction, currentUser, randomUser) => {
   await fetch(`/api/matches/createInteraction`, {
     method: "POST",
@@ -33,6 +54,13 @@ const createInteraction = async (interaction, currentUser, randomUser) => {
   });
 };
 
+/**
+ * Handles the unmatch user interaction.
+ * It updates the interaction status to dislike and removes the match from the matches array.
+ * Once unmatched, it sets the showMatchedProfile state to null and goes back to the swipe card.
+ *
+ * @param {Object} currentUser The current user.
+ */
 export const unmatchUser = async (
   matches,
   setMatches,
@@ -56,6 +84,14 @@ export const unmatchUser = async (
   }
 };
 
+/**
+ * Handles the interaction between the current user and the random user.
+ * If the interaction exists, it updates the interaction status.
+ * If the interaction does not exist, it creates a new interaction.
+ * If the interaction status is like after the update, it fetches the user's matches to trigger an update.
+ *
+ * @param {Object} props contains the interaction (like, dislike), the current user, the random user, the fetchUserData and fetchMatches functions.
+ */
 export const handleInteraction = async (props) => {
   const { interaction, currentUser, randomUser, fetchUserData, fetchMatches } =
     props;
@@ -72,10 +108,7 @@ export const handleInteraction = async (props) => {
       interaction
     );
     const updatedInteraction = await updatedInteractionResponse.json();
-    if (updatedInteraction.interactionStatus === "like") {
-      console.log("Match!!!");
-      fetchMatches();
-    }
+    if (updatedInteraction.interactionStatus === "like") fetchMatches();
   } else await createInteraction(interaction, currentUser, randomUser);
   await fetchUserData();
 };

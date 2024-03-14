@@ -7,6 +7,11 @@ import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
 
+/**
+ * Represents the Register/Login page component.
+ * @component
+ * @returns {JSX.Element} RegisterLoginPage component
+ */
 const RegisterLoginPage = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [isBasicDataFilled, setIsBasicDataFilled] = useState(false);
@@ -20,39 +25,52 @@ const RegisterLoginPage = () => {
     profileImg: "",
     bio: "",
   });
+
+  /**
+   * Handles the change event for input fields.
+   * @param {Event} e - The change event object.
+   */
   const handleChange = (e) => {
-    if (e.target.name === "profileImg")
-      console.log("image updated: ", e.target.value);
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
-    if (e.target.name === "profileImg")
-      console.log("Form:", JSON.stringify(form));
   };
+
+  /**
+   * Clears the errors array when the user changes from registering to logging in.
+   */
   useEffect(() => {
     setErrors([]);
   }, [isRegistering]);
 
+  /**
+   * Handles the main submission event.
+   * If isRegistering is true, it checks if the form is valid and sets the isBasicDataFilled state to true so it can show the profile settings form.
+   * If isRegistering is false, it submits the data to the server so the user can log in.
+   * @param {Event} e - The event object.
+   */
   const handleMainSubmission = (e) => {
     e.preventDefault();
-    console.log("checking validity");
     const targetForm = e.currentTarget;
     const isValid = targetForm.checkValidity();
     setValidated(true);
     if (isRegistering) {
-      console.log(targetForm);
       if (targetForm.id === "dataForm" && isValid) {
         setValidated(false);
         setIsBasicDataFilled(true);
-      } else if (targetForm.id === "profileSettingsForm" && isValid) {
-        console.log("submitting profile settings");
-        console.log(form);
+      } else if (targetForm.id === "profileSettingsForm" && isValid)
         submitData("register");
-      }
     } else if (!isRegistering) submitData("login");
   };
 
+  /**
+   * Submits data to the specified endpoint, register or login.
+   * If the response status is 200 and the user is logging in, it sets the auth_token in the local storage and redirects the user to the chat page.
+   * If the response status is 200 and the user is registering, it redirects the user to the home page.
+   * If the response status is 400 or 401, it sets the errors state to the response body errors.
+   * @param {string} endpoint - The endpoint to send the data to.
+   */
   async function submitData(endpoint) {
     try {
       const response = await fetch(`/api/user/${endpoint}`, {
@@ -64,15 +82,13 @@ const RegisterLoginPage = () => {
       });
       const responseBody = await response.json();
 
-      if ([400, 401].includes(response.status)) {
-        console.log("responseBody", responseBody);
+      if ([400, 401].includes(response.status))
         if (responseBody.errors) setErrors(responseBody.errors);
-      } else if (response.status === 200 && !isRegistering) {
-        localStorage.setItem("auth_token", responseBody.token);
-        console.log("LOGUEAO:" + responseBody.token);
-        window.location.href = "/chatPage";
-      } else if (response.status === 200 && isRegistering)
-        window.location.href = "/";
+        else if (response.status === 200 && !isRegistering) {
+          localStorage.setItem("auth_token", responseBody.token);
+          window.location.href = "/chatPage";
+        } else if (response.status === 200 && isRegistering)
+          window.location.href = "/";
     } catch (error) {
       console.error("An error occurred:", error);
     }

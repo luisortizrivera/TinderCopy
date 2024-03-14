@@ -2,11 +2,20 @@ import React, { useEffect, useState, useContext } from "react";
 import "../Styles/ProfileCard.css";
 import { handleInteraction } from "../handlers/InteractionHandlers";
 import { MainPageContext } from "../Context/MainPageContext";
+
+/**
+ * Renders the profile card component of a random user.
+ */
 const Profile = () => {
   const { currentUser, fetchUserImage, fetchMatches } =
     useContext(MainPageContext);
   const [randomUser, setRandomUser] = useState(null);
 
+  /**
+   * Fetches the random user data from the server.
+   * If the user is found, it fetches the user's image.
+   * If the user is not found, it sets the randomUser state to null.
+   */
   const fetchUserData = async () => {
     try {
       const response = await fetch("/api/user/getRandomUser", {
@@ -44,26 +53,20 @@ const Profile = () => {
             <h3>{`${randomUser.user.Name} ${randomUser.user.Surname}`}</h3>
           </div>
           <div className="profileDescription">
-            <p>
-              {randomUser.user.Bio}
-              {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequatliquip ex ea */}
-            </p>
+            <p>{randomUser.user.Bio}</p>
           </div>
           <div className="profileButtons">
             <button
-            id="dislikeButton"
-            onClick={() =>
-              handleInteraction({
-                interaction: "dislike",
-                currentUser: currentUser,
-                randomUser: randomUser,
-                fetchUserData: fetchUserData,
-                fetchMatches: fetchMatches,
-              })
-            }
+              id="dislikeButton"
+              onClick={() =>
+                handleInteraction({
+                  interaction: "dislike",
+                  currentUser: currentUser,
+                  randomUser: randomUser,
+                  fetchUserData: fetchUserData,
+                  fetchMatches: fetchMatches,
+                })
+              }
             >
               NOPE
             </button>

@@ -3,6 +3,11 @@ import PropTypes from "prop-types";
 import "../Styles/ChatBox.css";
 import { MainPageContext } from "../Context/MainPageContext";
 
+/**
+ * Renders the chat box component card.
+ *
+ * @param {*} props userName, userSurname, and chatId
+ */
 const ChatBox = (props) => {
   const { userName, userSurname, chatId } = props;
   const { currentUser } = useContext(MainPageContext);
@@ -15,6 +20,9 @@ const ChatBox = (props) => {
   const [chat, setChat] = useState(null);
   const [newMessage, setNewMessage] = useState("");
 
+  /**
+   * Fetches the chat from the server.
+   */
   const fetchChat = async () => {
     try {
       const chatResponse = await fetch(`/api/chats/getChat/${chatId}`, {
@@ -38,6 +46,11 @@ const ChatBox = (props) => {
     if (chat) setMessages(chat.messages);
   }, [chat]);
 
+  /**
+   * Handles sending a message to the chat when the user clicks the send button.
+   *
+   * @param {*} event submit event controlling the form
+   */
   const handleSend = async (event) => {
     event.preventDefault();
 

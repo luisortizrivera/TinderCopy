@@ -6,6 +6,11 @@ import { handleOpenChat, handleOpenProfile } from "../handlers/cardHandlers";
 import { MainPageContext } from "../Context/MainPageContext";
 const uuid = require("uuid");
 
+/**
+ * Renders the user's matches into an accordion component.
+ *
+ * @param {*} props  showChatBox and setShowMatchedProfile trigger states
+ */
 const Matches = (props) => {
   const {
     currentUser,
@@ -19,6 +24,11 @@ const Matches = (props) => {
     window.innerWidth >= 500 ? "0" : null
   );
 
+  /**
+   * Sets the active key of the accordion based on the window width.
+   * If the window width is greater than 500px, the active key is set to "0" and the accordion is expanded by default.
+   * If the window width is less than 500px, the active key is set to null and the accordion is collapsed by default.
+   */
   useEffect(() => {
     const handleResize = () => {
       setActiveKey(window.innerWidth >= 500 ? "0" : null);
@@ -54,6 +64,9 @@ const Matches = (props) => {
   );
   //#endregion
 
+  /**
+   *  Gets the user data and image from the server and adds it to the matchedUsersData state array
+   */
   const getUserData = async (userMatchedID, newUsersWithMatches) => {
     try {
       const userMatchedDataresponse = await fetch(
@@ -70,6 +83,12 @@ const Matches = (props) => {
     }
   };
 
+  /**
+   * Forwards the matched user's data in addition to some other data
+   * to the handleOpenChat function when the user clicks the open chat button.
+   *
+   * @param {*} matchedUser
+   */
   const handleOpenChatFromMatches = (matchedUser) => {
     handleOpenChat(
       { matches, currentUser, setShowMatchedProfile, setShowChatBox },
@@ -77,10 +96,23 @@ const Matches = (props) => {
     );
   };
 
+  /**
+   * Forwards the matched user's data in addition to some other data when the
+   * user clicks the open profile button.
+   *
+   * @param {*} matchedUser
+   */
   const handleOpenProfileFromMatches = (matchedUser) => {
     handleOpenProfile({ setShowMatchedProfile, setShowChatBox }, matchedUser);
   };
 
+  /**
+   * Fetches the matched user's data and image from the server and sets the matchedUsersData state array
+   * when the matches state array changes.
+   * It also checks if the user is already in the matchedUsersData state array before fetching the user's data.
+   * If the user is already in the matchedUsersData state array, it adds the user to the newUsersWithMatches array.
+   * If the user is not in the matchedUsersData state array, it fetches the user's data and image from the server.
+   */
   useEffect(() => {
     const fetchData = async () => {
       if (matches.length > 0) {

@@ -20,6 +20,10 @@ export default function ProfileSetting({
   };
   const [profileImg, setProfileImg] = useState(null);
 
+  /**
+   * Handles the image upload event.
+   * It compresses the image and sets the profileImg state to the compressed image.
+   */
   async function handleImageUpload(event) {
     const imageFile = event.target.files[0];
     if (imageFile) {

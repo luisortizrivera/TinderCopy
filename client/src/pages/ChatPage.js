@@ -20,6 +20,9 @@ const ChatPage = () => {
     setShowMatchedProfile,
   } = useContext(MainPageContext);
 
+  /**
+   * Loads the user's matches when the component mounts.
+   */
   useEffect(() => {
     fetchMatches();
     // eslint-disable-next-line react-hooks/exhaustive-deps
